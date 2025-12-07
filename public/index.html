@@ -5,21 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SolScanner | Enterprise Analytics</title>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,702 +21,1050 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Rajdhani', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     colors: {
-                        void: '#050510',
+                        void: '#020205',
+                        'sys-dark': '#0A0A12',
+                        'sys-glass': 'rgba(20, 20, 35, 0.6)',
                         neon: {
-                            purple: '#9945FF', /* Solana Purple */
-                            cyan: '#14F195',   /* Solana Green */
-                            green: '#14F195',
-                            red: '#ff3366',
+                            cyan: '#00F0FF',
+                            purple: '#BD00FF',
+                            green: '#00FF94',
+                            red: '#FF2A6D',
+                            yellow: '#FFD600'
                         }
                     },
                     backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'cosmic-gradient': 'linear-gradient(to right, #9945FF, #14F195)',
-                    },
-                    animation: {
-                        'spin-slow': 'spin 3s linear infinite',
-                        'spin-reverse': 'spin-reverse 2s linear infinite',
-                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'marquee': 'marquee 25s linear infinite',
-                    },
-                    keyframes: {
-                        'spin-reverse': {
-                            '0%': { transform: 'rotate(0deg)' },
-                            '100%': { transform: 'rotate(-360deg)' },
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px #9945FF' },
-                            '50%': { opacity: .5, boxShadow: '0 0 5px #9945FF' },
-                        },
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        }
+                        'hex-pattern': "url('data:image/svg+xml,%3Csvg width=\"24\" height=\"40\" viewBox=\"0 0 24 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 40c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10s-10 4.477-10 10v20c0 5.523 4.477 10 10 10z\" fill=\"%2300F0FF\" fill-opacity=\"0.05\" fill-rule=\"evenodd\"/%3E%3C/svg%3E')",
                     }
                 }
             }
         }
     </script>
     <style>
-        .loader-ring {
-            border: 2px solid transparent;
-            border-top-color: #9945FF;
-            border-radius: 50%;
-        }
-        .loader-ring-inner {
-            border: 2px solid transparent;
-            border-bottom-color: #14F195;
-            border-radius: 50%;
-        }
+        /* Base Layout Fixes */
+        html, body { height: 100%; margin: 0; padding: 0; background-color: #020205; }
+
+        .loader-ring { border: 2px solid transparent; border-top-color: #9945FF; border-radius: 50%; }
+        .loader-ring-inner { border: 2px solid transparent; border-bottom-color: #14F195; border-radius: 50%; }
+        
         /* Custom Scrollbar for Tables */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9945FF; }
+        
+        .typing-cursor::after { content: '█'; display: inline-block; margin-left: 2px; animation: blink 1s step-end infinite; color: #00F0FF; font-size: 0.8em; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Boot Screen Styling */
+        #boot-sequence { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; }
+        .boot-line {
+            margin-bottom: 2px; opacity: 0; animation: fadeIn 0.02s forwards;
+            display: block; white-space: nowrap; overflow: hidden; text-shadow: 0 0 5px currentColor;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
+        .boot-success { color: #00FF94; }
+        .boot-warn { color: #FFD600; }
+        .boot-error { color: #FF2A6D; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        
+        .access-btn-glow {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.8), inset 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(189, 0, 255, 0.4);
+            animation: btnPulseIntense 1.5s infinite alternate;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 2px;
+        @keyframes btnPulseIntense {
+            from { box-shadow: 0 0 20px rgba(0, 240, 255, 0.8), inset 0 0 20px rgba(0, 240, 255, 0.4); }
+            to { box-shadow: 0 0 50px rgba(0, 240, 255, 1), inset 0 0 30px rgba(0, 240, 255, 0.6), 0 0 60px rgba(189, 0, 255, 0.6); border-color: rgba(0, 240, 255, 1); color: white; }
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #9945FF;
+
+        /* Transition States */
+        #app-interface {
+            transition: opacity 1.5s ease-out, transform 1.5s cubic-bezier(0.19, 1, 0.22, 1), filter 1.5s ease-out;
+            will-change: opacity, transform, filter;
+            min-height: 100vh;
+        }
+        
+        .system-offline {
+            opacity: 0 !important;
+            filter: blur(20px) brightness(0);
+            transform: scale(0.95);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .system-online {
+            opacity: 1 !important;
+            filter: blur(0px) brightness(1);
+            transform: scale(1);
+            pointer-events: auto;
+            visibility: visible !important;
+        }
+
+        /* CRT Flash */
+        @keyframes crt-flash { 0% { background-color: rgba(255, 255, 255, 0); } 10% { background-color: rgba(255, 255, 255, 0.8); } 100% { background-color: rgba(255, 255, 255, 0); } }
+        .flash-active { animation: crt-flash 0.5s ease-out forwards; pointer-events: none; z-index: 9999; position: fixed; inset: 0; }
+
+        /* --- HYPERSPACE SCROLL FX --- */
+        .hyperspace-mode #app-interface {
+            animation: warp-jump 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+
+        @keyframes warp-jump {
+            0% { transform: scale(1) translateZ(0); filter: blur(0) brightness(1); opacity: 1; }
+            40% { transform: scale(0.8) translateY(100px); filter: blur(20px) hue-rotate(90deg) brightness(2); opacity: 0.5; }
+            50% { opacity: 0; } 
+            60% { transform: scale(1.1); filter: blur(10px) hue-rotate(-45deg); opacity: 0.5; }
+            100% { transform: scale(1) translateZ(0); filter: blur(0) brightness(1); opacity: 1; }
+        }
+
+        .impact-shockwave {
+            animation: impact-ripple 0.6s ease-out forwards;
+            position: relative;
+            z-index: 50;
+        }
+        
+        @keyframes impact-ripple {
+            0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); border-color: rgba(255,255,255,0.1); }
+            30% { box-shadow: 0 0 100px 20px rgba(0, 240, 255, 0.5), inset 0 0 50px rgba(0, 240, 255, 0.3); border-color: #00F0FF; background-color: rgba(0, 240, 255, 0.1); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); border-color: rgba(255,255,255,0.1); background-color: transparent; }
         }
     </style>
 </head>
-<body class="antialiased selection:bg-neon-purple selection:text-white overflow-hidden"> 
+<body class="bg-void text-white overflow-x-hidden selection:bg-neon-cyan selection:text-black font-sans overflow-hidden"> 
 
-    <!-- ================= PRELOADER ================= -->
-    <div id="preloader" class="fixed inset-0 z-[100] bg-void flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out">
-        <div class="relative w-24 h-24 mb-8">
-            <div class="absolute inset-0 loader-ring animate-spin shadow-[0_0_15px_rgba(153,69,255,0.5)]"></div>
-            <div class="absolute inset-2 loader-ring-inner animate-spin-reverse shadow-[0_0_15px_rgba(20,241,149,0.5)]"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="radar" class="text-white w-8 h-8 animate-pulse"></i>
+    <div id="crt-flash-overlay" class="z-[100]"></div>
+
+    <div id="preloader" class="fixed inset-0 z-[90] bg-black flex flex-col items-center justify-center p-4 cursor-wait transition-all duration-1000">
+        <div class="w-full max-w-4xl h-[85vh] border-2 border-neon-cyan/50 rounded-lg bg-[#050508]/90 relative overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,240,255,0.3)]">
+            <div class="h-8 border-b border-neon-cyan/30 bg-neon-cyan/10 flex items-center justify-between px-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse delay-75"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse delay-150"></div>
+                </div>
+                <div class="text-[10px] font-mono text-neon-cyan tracking-widest animate-pulse-intense">SOL.OS_KERNEL_V5.0_BOOT_SEQUENCE</div>
             </div>
-        </div>
-        <div class="h-6 mb-4">
-            <span id="loader-text" class="font-mono text-sm tracking-widest text-neon-green">INITIALIZING SYSTEM...</span>
-        </div>
-        <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-            <div id="loader-progress" class="h-full bg-gradient-to-r from-neon-purple to-neon-green w-0 transition-all duration-[2200ms] ease-out"></div>
-        </div>
-    </div>
-
-    <!-- Particle Background -->
-    <canvas id="particles-canvas" class="fixed inset-0 -z-10 pointer-events-none"></canvas>
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-white/10 top-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <div class="flex items-center gap-2 cursor-pointer">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-purple to-neon-green flex items-center justify-center shadow-lg shadow-neon-purple/20">
-                        <i data-lucide="radar" class="text-void w-6 h-6 fill-current"></i>
-                    </div>
-                    <span class="text-xl font-bold font-display tracking-wider">SOL<span class="text-neon-green">SCANNER</span></span>
+            <div class="flex-1 p-6 font-mono text-[0.65rem] text-gray-400 overflow-y-auto custom-scrollbar relative" id="terminal-window" style="scroll-behavior: auto;">
+                <div id="boot-sequence" class="space-y-0.5"></div>
+                <div id="cursor-line" class="mt-2 hidden"><span class="text-neon-cyan">></span> <span class="typing-cursor"></span></div>
+            </div>
+            <div id="access-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000 z-20">
+                <div class="text-center mb-12 relative">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-neon-green/20 rounded-full blur-[80px] animate-pulse-intense"></div>
+                    <i data-lucide="shield-check" class="w-24 h-24 text-neon-green mx-auto mb-6 animate-bounce drop-shadow-[0_0_20px_rgba(0,255,148,0.8)] relative z-10"></i>
+                    <h2 class="text-4xl font-bold font-display text-white tracking-widest mb-2 glitch-effect" data-text="SYSTEM READY">SYSTEM READY</h2>
+                    <p class="text-sm font-mono text-neon-green animate-pulse">All modules loaded. Connection secure. Awaiting input.</p>
                 </div>
                 
-                <!-- Links -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Terminal</a>
-                        <a href="#utility" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Utility</a>
-                        <a href="#tokenomics" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Tokenomics</a>
-                        <a href="#roadmap" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Roadmap</a>
-                        <a href="#faq" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</a>
-                        <a href="documentation.html" target="_blank" class="text-neon-green hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1">
-                            Whitepaper <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-                        </a>
-                    </div>
-                </div>
+                <button id="enter-btn" class="group relative px-16 py-6 bg-transparent border-2 border-neon-cyan text-neon-cyan font-mono text-lg tracking-[0.2em] hover:bg-neon-cyan hover:text-black transition-all duration-300 access-btn-glow uppercase overflow-hidden cursor-pointer pointer-events-auto">
+                    <span class="relative z-10 font-bold">Initialize Interface</span>
+                    <div class="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-neon-cyan"></div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-neon-cyan"></div>
+                    <div class="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0"></div>
+                </button>
+            </div>
+            <div class="h-8 border-t border-neon-cyan/30 bg-neon-cyan/10 flex items-center justify-between px-4 text-[10px] font-mono text-neon-cyan">
+                <span class="animate-pulse">MEM: 128TB OK // CPU: QUANTUM_CORE_X9</span>
+                <span id="boot-status" class="animate-pulse-intense">BOOTING_KERNEL...</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="fixed inset-0 z-[-20] perspective-container pointer-events-none">
+        <div class="cyber-grid absolute inset-0 opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020205_100%)] opacity-80"></div>
+    </div>
 
-                <!-- Status Indicator -->
-                <div class="flex items-center gap-2">
-                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-                        <span class="relative flex h-2 w-2">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                        </span>
-                        <span class="text-xs font-medium text-gray-300">Nodes Operational</span>
-                    </div>
+    <canvas id="network-canvas" class="fixed inset-0 z-[-15] pointer-events-none mix-blend-screen opacity-100"></canvas>
+
+    <div class="fixed inset-0 pointer-events-none z-[-10] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
+    <div class="fixed inset-0 pointer-events-none z-[-10] bg-hex-pattern opacity-10"></div>
+    
+
+    <nav class="fixed w-full z-[60] border-b border-white/5 bg-void/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <div class="flex items-center gap-4 group cursor-pointer">
+                <div class="relative w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg overflow-hidden group-hover:border-neon-cyan transition-all duration-300">
+                    <div class="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <i data-lucide="aperture" class="text-white w-6 h-6 relative z-10 group-hover:rotate-180 transition-transform duration-500"></i>
+                    <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan opacity-50"></div>
+                    <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan opacity-50"></div>
                 </div>
+                <div class="flex flex-col">
+                    <span class="font-bold tracking-[0.2em] text-xl leading-none glitch-effect" data-text="SOLSCANNER">SOL<span class="text-neon-cyan">SCANNER</span></span>
+                    <span class="text-[10px] text-gray-500 font-mono tracking-widest mt-1">SYSTEM_READY // V5.0</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-10 font-mono text-xs tracking-widest text-gray-400">
+                <a href="#scanner-section" class="scroll-link hover:text-neon-cyan transition-colors relative group">
+                    TERMINAL
+                    <span class="absolute -bottom-2 left-0 w-0 h-0.5 bg-neon-cyan group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#utility" class="scroll-link hover:text-neon-cyan transition-colors">UTILITY</a>
+                <a href="#tokenomics" class="scroll-link hover:text-neon-cyan transition-colors">TOKEN_DATA</a>
+                <a href="#roadmap" class="scroll-link hover:text-neon-cyan transition-colors">ROADMAP</a>
+                <a href="#faq" class="scroll-link hover:text-neon-cyan transition-colors">FAQ</a>
+                <a href="documentation.html" target="_blank" class="px-4 py-2 border border-neon-green/30 text-neon-green hover:bg-neon-green/10 transition-all rounded clip-path-slant">
+                    DOCS_V2.0
+                </a>
             </div>
         </div>
     </nav>
+    
+    <div class="fixed top-24 left-0 w-full bg-black/80 border-y border-white/5 z-[55] backdrop-blur-sm overflow-hidden h-8 flex items-center">
+        <div class="whitespace-nowrap animate-ticker flex gap-12 font-mono text-[10px] text-gray-400 tracking-wider">
+            <span><span class="text-neon-cyan">SOL/USD:</span> $142.50 <span class="text-neon-green">(+2.4%)</span></span>
+            <span><span class="text-neon-cyan">TPS:</span> 4,209</span>
+            <span><span class="text-neon-cyan">EPOCH:</span> 602</span>
+            <span><span class="text-neon-purple">NETWORK:</span> MAINNET-BETA</span>
+            <span><span class="text-neon-cyan">DOMINANCE:</span> 2.8%</span>
+            <span><span class="text-neon-yellow">GAS:</span> 0.000005 SOL</span>
+            <span><span class="text-neon-cyan">SOL/USD:</span> $142.50 <span class="text-neon-green">(+2.4%)</span></span>
+            <span><span class="text-neon-cyan">TPS:</span> 4,209</span>
+        </div>
+    </div>
+    
+    <div class="fixed left-6 top-40 bottom-32 w-48 hidden xl:flex flex-col z-30 pointer-events-none opacity-50 font-mono text-[9px] text-neon-cyan space-y-1 overflow-hidden mask-fade-y">
+        <div class="text-xs font-bold text-white mb-2 border-b border-neon-cyan/30 pb-1">SYS_LOGS // LIVE</div>
+        <div id="system-logs" class="space-y-1"></div>
+    </div>
 
-    <!-- Hero Section -->
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="absolute top-20 left-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-[128px] -z-10"></div>
-        <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-neon-green/20 rounded-full blur-[128px] -z-10"></div>
+    <div id="app-interface" class="system-offline h-full w-full relative z-10">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-neon-purple/30 text-neon-green text-sm mb-8 animate-fade-in-up">
-                    <i data-lucide="cpu" class="w-4 h-4"></i>
-                    The New Standard in On-Chain Transparency
-                </div>
-                <h1 class="text-5xl md:text-7xl font-bold font-display tracking-tight mb-8 leading-tight">
-                    Institutional Grade <br/>
-                    <span class="text-gradient">Analytics Infrastructure</span>
-                </h1>
-                <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Leveraging proprietary indexing and real-time node infrastructure to deliver the fastest audits and wallet telemetry on Solana.
-                </p>
+        <main class="relative pt-44 pb-20 px-6 max-w-7xl mx-auto space-y-40">
+            
+            <section class="text-center relative perspective-container">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon-purple/10 rounded-full blur-[120px] -z-10"></div>
                 
-                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-                    <button onclick="document.getElementById('scanner-section').scrollIntoView({behavior: 'smooth'})" class="group relative px-8 py-4 bg-white text-void font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.7)]">
-                        <span class="relative z-10 flex items-center gap-2">Launch Terminal <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></span>
+                <div class="inline-flex items-center gap-3 px-4 py-2 border border-neon-cyan/20 bg-neon-cyan/5 rounded backdrop-blur-md mb-12 animate-pulse-glow">
+                    <div class="w-2 h-2 bg-neon-cyan rounded-full animate-ping"></div>
+                    <span class="font-mono text-xs text-neon-cyan tracking-[0.2em]">LIVE_NET_CONNECTED</span>
+                </div>
+
+                <div class="relative z-10 flex justify-center mb-8">
+                    <div class="w-64 h-64 relative animate-[float_6s_ease-in-out_infinite]">
+                        <div class="absolute inset-0 bg-neon-cyan/20 blur-3xl rounded-full"></div>
+                        <img 
+                            src="https://images.unsplash.com/photo-1614728853911-ec905596d623?q=80&w=1000&auto=format&fit=crop" 
+                            alt="3D Hologram" 
+                            class="w-full h-full object-cover rounded-2xl mix-blend-screen opacity-90 border border-white/10 shadow-2xl shadow-neon-cyan/20"
+                            style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"
+                        >
+                        <div class="absolute -top-4 -right-10 bg-black/80 border border-neon-green/30 px-3 py-1 text-[10px] font-mono text-neon-green rounded backdrop-blur-md">
+                            BLOCK_HEIGHT: 249,102,991
+                        </div>
+                        <div class="absolute -bottom-4 -left-10 bg-black/80 border border-neon-purple/30 px-3 py-1 text-[10px] font-mono text-neon-purple rounded backdrop-blur-md">
+                            TPS: 4,209
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="text-7xl md:text-9xl font-bold mb-6 tracking-tighter leading-none relative z-10 font-display">
+                    LEDGER <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-neon-purple drop-shadow-[0_0_15px_rgba(0,240,255,0.5)] glitch-effect" data-text="FORENSICS">FORENSICS</span>
+                </h1>
+                
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg mb-12 font-light tracking-wide font-sans">
+                    Institutional-grade analytics terminal. Bypass public RPC bottlenecks with proprietary <span class="text-white">Sentinel Nodes</span>.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-6 items-center">
+                    <button onclick="document.getElementById('scanner-section').scrollIntoView({behavior: 'smooth'})" class="group relative px-8 py-4 bg-neon-cyan text-black font-bold tracking-widest clip-path-slant hover:bg-white transition-colors">
+                        INITIALIZE_SCAN
+                        <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
                     </button>
-                    <a href="#tokenomics" class="px-8 py-4 glass-panel border border-white/20 rounded-lg font-medium hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-                        Buy $SCAN <i data-lucide="coins" class="w-4 h-4"></i>
+                    <a href="#tokenomics" class="scroll-link px-8 py-4 border border-white/20 text-white font-mono text-xs tracking-widest hover:border-neon-purple hover:text-neon-purple transition-all flex items-center gap-2">
+                        TOKEN_METRICS <i data-lucide="arrow-down" class="w-3 h-3"></i>
                     </a>
                 </div>
-            </div>
-        </div>
-    </header>
+            </section>
 
-    <!-- Scanner Section (Core Tool) -->
-    <section id="scanner-section" class="py-24 relative">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Solana Audit Terminal</h2>
-                <p class="text-gray-400">Query the mainnet for Token Contract or Wallet Address telemetry.</p>
-            </div>
+            <section id="scanner-section" class="perspective-container">
+                <div class="absolute -left-10 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+                <div class="absolute -right-10 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
 
-            <div class="glass-panel rounded-2xl border border-white/10 p-1 shadow-2xl shadow-neon-purple/10">
-                <!-- Tab Headers -->
-                <div class="flex gap-1 bg-black/40 p-1 rounded-xl mb-6">
-                    <button onclick="switchTab('token')" id="tab-token" class="flex-1 py-3 rounded-lg text-sm font-bold transition-all bg-white/10 text-white shadow-lg">
-                        <i data-lucide="search" class="inline w-4 h-4 mr-2"></i> Token Audit
-                    </button>
-                    <button onclick="switchTab('wallet')" id="tab-wallet" class="flex-1 py-3 rounded-lg text-sm font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all">
-                        <i data-lucide="wallet" class="inline w-4 h-4 mr-2"></i> Wallet Profiler
-                    </button>
-                </div>
+                <div class="hud-card relative bg-sys-glass border border-white/10 rounded-xl backdrop-blur-xl overflow-hidden transform-style-3d transition-transform duration-100 ease-out z-20" id="main-terminal">
+                    
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent opacity-50"></div>
+                    <div class="absolute top-4 right-4 flex gap-1">
+                        <div class="w-1 h-1 bg-white/20"></div>
+                        <div class="w-1 h-1 bg-white/20"></div>
+                        <div class="w-1 h-1 bg-neon-cyan"></div>
+                    </div>
 
-                <div class="p-4 md:p-8">
-                    <!-- Search Bar -->
-                    <div class="flex flex-col md:flex-row gap-4 mb-8">
-                        <div class="relative flex-grow">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i data-lucide="terminal" class="h-5 w-5 text-gray-500"></i>
-                            </div>
-                            <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-4 border border-white/10 rounded-lg leading-5 bg-black/50 text-gray-300 placeholder-gray-500 focus:outline-none focus:bg-black/80 focus:ring-1 focus:ring-neon-purple focus:border-neon-purple sm:text-sm transition-all font-mono" placeholder="Enter Solana Address..." value="">
-                        </div>
-                        <button onclick="runAnalysis()" class="px-8 py-4 bg-neon-purple hover:bg-neon-purple/80 text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(153,69,255,0.3)] flex items-center justify-center gap-2 min-w-[160px]">
-                            <span id="btnText">Execute</span>
-                            <div id="btnLoader" class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-5 w-5 hidden"></div>
+                    <div class="flex border-b border-white/5 bg-black/40">
+                        <button onclick="switchTab('token')" id="tab-token" class="flex-1 py-6 text-sm font-mono text-neon-cyan border-b-2 border-neon-cyan bg-white/5 tracking-widest">
+                            // TOKEN_AUDIT
+                        </button>
+                        <button onclick="switchTab('wallet')" id="tab-wallet" class="flex-1 py-6 text-sm font-mono text-gray-600 hover:text-white transition-colors tracking-widest">
+                            // WALLET_PROFILER
                         </button>
                     </div>
 
-                    <!-- Error Message -->
-                    <div id="errorMessage" class="hidden mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-center text-sm font-medium"></div>
+                    <div class="p-8 md:p-12">
+                        <div class="relative group">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple opacity-20 group-hover:opacity-60 transition duration-500 blur"></div>
+                            <div class="relative flex bg-void">
+                                <div class="w-12 flex items-center justify-center border-l border-t border-b border-white/10">
+                                    <span class="font-mono text-neon-cyan">></span>
+                                </div>
+                                <input type="text" id="searchInput" class="block w-full py-5 bg-transparent border-y border-r border-white/10 text-white font-mono placeholder-gray-700 focus:outline-none focus:border-neon-cyan/50 focus:text-neon-cyan transition-colors" placeholder="ENTER_MINT_ADDRESS_OR_WALLET..." value="">
+                                <button onclick="runAnalysis()" class="absolute right-2 top-2 bottom-2 px-8 bg-white/5 border border-white/10 hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all font-mono text-xs tracking-widest">
+                                    <span id="btnText">EXECUTE</span>
+                                    <div id="btnLoader" class="hidden w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                                </button>
+                            </div>
+                        </div>
 
-                    <!-- Results Area -->
-                    <div id="resultsArea" class="hidden animate-fade-in">
-                        
-                        <!-- TOKEN RESULTS -->
-                        <div id="tokenResults" class="space-y-6">
+                        <div id="errorMessage" class="hidden mt-6 p-4 border-l-2 border-neon-red bg-neon-red/5 font-mono text-xs text-neon-red">
+                            [ERROR] :: <span id="errorText">CONNECTION_REFUSED</span>
+                        </div>
+
+                        <div id="resultsArea" class="hidden mt-12 space-y-12">
                             
-                            <!-- Header Info -->
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div id="tokenIcon" class="w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center text-neon-purple font-bold">?</div>
+                            <div id="tokenResults" class="space-y-8 animate-fade-in-up">
+                                
+                                <div class="flex items-end justify-between border-b border-white/5 pb-6">
                                     <div>
-                                        <h3 id="tokenName" class="text-xl font-bold text-white leading-none">Unknown Token</h3>
-                                        <span id="tokenSymbol" class="text-sm text-gray-400">---</span>
+                                        <div class="text-[10px] font-mono text-gray-500 mb-1">ASSET_IDENTIFIER</div>
+                                        <h2 class="text-4xl font-bold text-white flex items-center gap-3 font-display">
+                                            <span id="tokenName">LOADING</span>
+                                            <span class="text-sm px-2 py-1 bg-white/5 rounded text-gray-400 font-mono" id="tokenSymbol">---</span>
+                                        </h2>
+                                        <a href="#" target="_blank" id="viewExplorer" class="inline-flex items-center gap-2 mt-2 text-xs font-mono text-neon-cyan hover:text-white transition-colors">
+                                            VIEW_ON_EXPLORER <i data-lucide="external-link" class="w-3 h-3"></i>
+                                        </a>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] font-mono text-gray-500 mb-1">RISK_SCORE</div>
+                                        <div id="res-score" class="text-5xl font-bold font-mono text-white">---</div>
                                     </div>
                                 </div>
-                                <a id="viewExplorer" href="#" target="_blank" class="text-xs text-neon-green hover:text-white flex items-center gap-1 transition-colors">
-                                    <i data-lucide="external-link" class="w-3 h-3"></i> View on Solscan
-                                </a>
-                            </div>
 
-                            <!-- High Level Stats Grid -->
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="dollar-sign" class="w-3 h-3"></i> Price</div>
-                                    <div id="res-price" class="text-2xl font-bold font-display text-green-400">---</div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="data-box" data-label="CURRENT_PRICE" id="res-price">---</div>
+                                    <div class="data-box" data-label="MARKET_CAP" id="res-mcap">---</div>
+                                    <div class="data-box" data-label="LIQUIDITY_USD" id="res-liquidity">---</div>
+                                    <div class="data-box" data-label="VOLUME_24H" id="res-volume">---</div>
+                                    <div class="data-box" data-label="TOTAL_SUPPLY" id="res-supply">---</div>
+                                    <div class="data-box" data-label="DECIMALS" id="res-decimals">---</div>
+                                    <div class="data-box" data-label="PROGRAM_ID" id="res-program">---</div>
+                                    <div class="data-box" data-label="ASSET_AGE" id="res-age">---</div>
                                 </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="bar-chart-2" class="w-3 h-3"></i> Market Cap</div>
-                                    <div id="res-mcap" class="text-2xl font-bold font-display text-white">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="droplet" class="w-3 h-3"></i> Liquidity</div>
-                                    <div id="res-liquidity" class="text-2xl font-bold font-display text-neon-green">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i> Volume (24h)</div>
-                                    <div id="res-volume" class="text-2xl font-bold font-display text-white">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="layers" class="w-3 h-3"></i> Supply</div>
-                                    <div id="res-supply" class="text-xl font-bold font-display text-white">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> Pool Age</div>
-                                    <div id="res-age" class="text-2xl font-bold font-display text-white">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="file-edit" class="w-3 h-3"></i> Mutable</div>
-                                    <div id="res-mutable" class="text-xl font-bold font-display text-white flex items-center gap-2">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 relative overflow-hidden group">
-                                    <div class="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors"></div>
-                                    <div class="text-gray-400 text-xs uppercase mb-1 relative z-10 flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3"></i> Security Score</div>
-                                    <div id="res-score" class="text-2xl font-bold font-display text-white relative z-10">---</div>
-                                </div>
-                            </div>
 
-                            <!-- Price Chart (Full Width) -->
-                            <div class="w-full glass-card p-6 rounded-xl border-t border-neon-purple/30">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="trending-up" class="text-neon-purple"></i> Price Trend (24h)</h3>
-                                </div>
-                                <div class="h-64">
-                                    <canvas id="priceChart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Risk & Holders Grid -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <!-- Security Risk Profile -->
-                                <div class="glass-card rounded-xl overflow-hidden h-full">
-                                    <div class="bg-white/5 px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                        <h3 class="font-bold text-white flex items-center gap-2"><i data-lucide="lock" class="text-neon-green"></i> Authority Profile</h3>
-                                        <span id="res-verdict" class="px-3 py-1 rounded-full bg-gray-500/20 text-gray-400 text-xs font-bold border border-gray-500/30">ANALYZING</span>
+                                <div class="w-full glass-card p-6 rounded-xl border-t border-neon-purple/30">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="trending-up" class="text-neon-purple"></i> Price Trend (24h)</h3>
                                     </div>
-                                    <div class="p-6 space-y-6">
-                                        <!-- Mint -->
-                                        <div class="flex items-start gap-3 border-b border-white/5 pb-4 last:border-0">
-                                            <div class="mt-1" id="icon-mint"><i data-lucide="circle" class="w-5 h-5 text-gray-500"></i></div>
-                                            <div>
-                                                <div class="text-sm font-bold text-gray-200">Mint Authority</div>
-                                                <div class="text-xs text-gray-400" id="val-mint">Checking...</div>
-                                                <div class="text-[10px] text-gray-500 mt-1">If enabled, supply can be diluted.</div>
+                                    <div class="h-64">
+                                        <canvas id="priceChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div class="hud-card-inner p-6 border border-white/5 bg-black/20 flex flex-col justify-between">
+                                        <h3 class="font-mono text-xs text-neon-red tracking-widest mb-6">SECURITY_VECTORS</h3>
+                                        <div class="space-y-6">
+                                            <div class="risk-row">
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Mint Authority</span><span id="val-mint" class="font-mono font-bold">...</span></div>
+                                                <div class="h-0.5 bg-gray-800 w-full"><div id="bar-mint" class="h-full w-0 bg-neon-red transition-all duration-1000"></div></div>
+                                            </div>
+                                            <div class="risk-row">
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Freeze Authority</span><span id="val-freeze" class="font-mono font-bold">...</span></div>
+                                                <div class="h-0.5 bg-gray-800 w-full"><div id="bar-freeze" class="h-full w-0 bg-neon-red transition-all duration-1000"></div></div>
+                                            </div>
+                                            <div class="risk-row">
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Metadata Mutable</span><span id="val-meta" class="font-mono font-bold">...</span></div>
+                                                <div class="h-0.5 bg-gray-800 w-full"><div id="bar-meta" class="h-full w-0 bg-neon-yellow transition-all duration-1000"></div></div>
                                             </div>
                                         </div>
-                                        <!-- Freeze -->
-                                        <div class="flex items-start gap-3 border-b border-white/5 pb-4 last:border-0">
-                                            <div class="mt-1" id="icon-freeze"><i data-lucide="circle" class="w-5 h-5 text-gray-500"></i></div>
-                                            <div>
-                                                <div class="text-sm font-bold text-gray-200">Freeze Authority</div>
-                                                <div class="text-xs text-gray-400" id="val-freeze">Checking...</div>
-                                                <div class="text-[10px] text-gray-500 mt-1">If enabled, developer can blacklist wallets.</div>
-                                            </div>
+                                        <div class="mt-auto pt-6 text-center">
+                                            <span id="res-verdict" class="inline-block px-4 py-2 border border-white/10 text-xs font-mono tracking-widest">AWAITING_DATA</span>
                                         </div>
-                                        <!-- Metadata -->
-                                        <div class="flex items-start gap-3">
-                                            <div class="mt-1" id="icon-meta"><i data-lucide="circle" class="w-5 h-5 text-gray-500"></i></div>
-                                            <div>
-                                                <div class="text-sm font-bold text-gray-200">Metadata Mutable</div>
-                                                <div class="text-xs text-gray-400" id="val-meta">Checking...</div>
-                                                <div class="text-[10px] text-gray-500 mt-1">If yes, image/name can be changed.</div>
-                                            </div>
+                                    </div>
+
+                                    <div class="hud-card-inner border border-white/5 bg-black/20 flex flex-col h-full">
+                                        <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                                            <h3 class="font-mono text-xs text-neon-green tracking-widest">TOP_20_HOLDERS</h3>
+                                            <div class="text-[10px] text-gray-500">SORT: DESCENDING</div>
+                                        </div>
+                                        <div class="overflow-x-auto flex-grow custom-scrollbar" style="max-height: 300px;">
+                                            <table class="w-full text-left border-collapse">
+                                                <thead class="bg-black/40 text-[10px] text-gray-400 font-mono uppercase sticky top-0 backdrop-blur-sm z-10">
+                                                    <tr>
+                                                        <th class="px-6 py-3">#</th>
+                                                        <th class="px-6 py-3">Address</th>
+                                                        <th class="px-6 py-3 text-right">Balance</th>
+                                                        <th class="px-6 py-3 text-right">% Owned</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="token-holders-list" class="divide-y divide-white/5 font-mono text-xs text-gray-300">
+                                                    </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Top Holders List -->
-                                <div class="glass-card rounded-xl overflow-hidden h-full flex flex-col">
-                                    <div class="bg-white/5 px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                        <h3 class="font-bold text-white flex items-center gap-2"><i data-lucide="users" class="text-neon-green"></i> Top 20 Holders</h3>
+                                
+                                <div class="w-full glass-card p-6 rounded-xl border-t border-neon-green/30">
+                                     <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="pie-chart" class="text-neon-green"></i> Supply Concentration</h3>
                                     </div>
-                                    <div class="overflow-x-auto flex-grow custom-scrollbar" style="max-height: 300px;">
-                                        <table class="w-full text-left text-sm">
-                                            <thead class="bg-white/5 text-gray-400 font-display uppercase tracking-wider text-xs sticky top-0 bg-[#0a0a14] z-10">
-                                                <tr>
-                                                    <th class="px-4 py-3">#</th>
-                                                    <th class="px-4 py-3">Address</th>
-                                                    <th class="px-4 py-3 text-right">Amount</th>
-                                                    <th class="px-4 py-3 text-right">%</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="token-holders-list" class="divide-y divide-white/5 bg-transparent">
-                                                <!-- JS Injected -->
-                                            </tbody>
-                                        </table>
+                                    <div class="h-64 relative flex items-center justify-center">
+                                        <canvas id="distributionChart"></canvas>
                                     </div>
                                 </div>
                             </div>
+
+                            <div id="walletResults" class="hidden space-y-8 animate-fade-in-up">
+                                <div class="p-8 border border-neon-green/20 bg-neon-green/5 rounded-xl relative overflow-hidden">
+                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-neon-green/20 rounded-full blur-[60px]"></div>
+                                    <div class="relative z-10">
+                                        <div class="text-xs font-mono text-neon-green mb-2 tracking-widest">NATIVE_SOL_BALANCE</div>
+                                        <div id="wallet-balance" class="text-6xl font-bold text-white tracking-tighter">---</div>
+                                        <div id="wallet-usd" class="text-sm text-gray-400 mt-2 font-mono">---</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
+                                        <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="coins" class="w-3 h-3"></i> SPL Tokens</div>
+                                        <div id="wallet-tokens" class="text-2xl font-bold font-display text-white">---</div>
+                                    </div>
+                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
+                                        <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="image" class="w-3 h-3"></i> NFTs / CNFTs</div>
+                                        <div id="wallet-nfts" class="text-2xl font-bold font-display text-white">---</div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="hud-card-inner border border-white/5 bg-black/20 h-96 flex flex-col">
+                                        <div class="px-6 py-4 border-b border-white/5"><h3 class="font-mono text-xs text-white">ASSET_INVENTORY</h3></div>
+                                        <div class="overflow-y-auto flex-1 custom-scrollbar"><table class="w-full text-left font-mono text-xs"><tbody id="wallet-asset-list" class="divide-y divide-white/5 text-gray-300"></tbody></table></div>
+                                    </div>
+                                    <div class="hud-card-inner border border-white/5 bg-black/20 h-96 flex flex-col">
+                                        <div class="px-6 py-4 border-b border-white/5"><h3 class="font-mono text-xs text-white">RECENT_ACTIVITY_LOG</h3></div>
+                                        <div class="overflow-y-auto flex-1 custom-scrollbar"><table class="w-full text-left font-mono text-xs"><tbody id="wallet-tx-list" class="divide-y divide-white/5 text-gray-300"></tbody></table></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <div id="emptyState" class="text-center py-24 opacity-30">
+                            <i data-lucide="radar" class="w-16 h-16 mx-auto mb-4 text-white animate-[spin_10s_linear_infinite]"></i>
+                            <p class="font-mono text-xs tracking-[0.2em] text-white">AWAITING_TARGET_DESIGNATION...</p>
                         </div>
 
-                        <!-- WALLET RESULTS -->
-                        <div id="walletResults" class="hidden space-y-6">
-                            <div class="glass-card p-6 rounded-xl flex items-center justify-between border-l-4 border-neon-green">
-                                <div>
-                                    <div class="text-gray-400 text-sm">Native Sol Balance</div>
-                                    <div id="wallet-balance" class="text-4xl font-bold font-display text-white mt-2">---</div>
-                                    <div id="wallet-usd" class="text-sm text-neon-green font-mono mt-1">---</div>
-                                </div>
-                                <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
-                                    <i data-lucide="wallet" class="w-8 h-8 text-neon-green"></i>
-                                </div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="problem" class="py-24 border-t border-white/5">
+                <div class="max-w-7xl mx-auto text-center">
+                    <h2 class="text-4xl font-bold mb-12 font-display">THE OPAQUE LEDGER PROBLEM</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="p-8 border border-red-500/20 bg-red-500/5 rounded-xl hover:bg-red-500/10 transition-colors">
+                            <i data-lucide="skull" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-bold text-white mb-2">98% Scam Rate</h3>
+                            <p class="text-sm text-gray-400">Most new tokens launched on Solana are rug pulls. Public tools are too slow to detect malicious authority changes.</p>
+                        </div>
+                        <div class="p-8 border border-yellow-500/20 bg-yellow-500/5 rounded-xl hover:bg-yellow-500/10 transition-colors">
+                            <i data-lucide="clock" class="w-12 h-12 text-yellow-500 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-bold text-white mb-2">RPC Latency</h3>
+                            <p class="text-sm text-gray-400">Public RPCs cache data for up to 30 seconds. By the time you see the liquidity pull, it's already too late.</p>
+                        </div>
+                        <div class="p-8 border border-blue-500/20 bg-blue-500/5 rounded-xl hover:bg-blue-500/10 transition-colors">
+                            <i data-lucide="eye-off" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-bold text-white mb-2">Hidden Metadata</h3>
+                            <p class="text-sm text-gray-400">Malicious actors hide mutable flags in nested Metaplex standards that standard scanners overlook.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <section class="py-24 border-t border-white/5">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl font-bold mb-12 text-center font-display">COMPETITIVE MOAT</h2>
+                    <div class="overflow-x-auto rounded-xl border border-white/10">
+                        <table class="w-full text-left text-sm font-mono">
+                            <thead class="bg-white/5 text-neon-cyan uppercase">
+                                <tr>
+                                    <th class="px-6 py-4">Feature</th>
+                                    <th class="px-6 py-4 text-center">SolScanner</th>
+                                    <th class="px-6 py-4 text-center text-gray-500">Competitors</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr>
+                                    <td class="px-6 py-4 text-white">Authority Analysis Latency</td>
+                                    <td class="px-6 py-4 text-center text-neon-green font-bold">< 50ms</td>
+                                    <td class="px-6 py-4 text-center text-gray-500">~2-5s</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-white">Direct Ledger Access</td>
+                                    <td class="px-6 py-4 text-center text-neon-green font-bold">Yes (Geyser)</td>
+                                    <td class="px-6 py-4 text-center text-gray-500">No (Public RPC)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-white">Metadata Decoding</td>
+                                    <td class="px-6 py-4 text-center text-neon-green font-bold">Recursive</td>
+                                    <td class="px-6 py-4 text-center text-gray-500">Surface Level</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-white">Enterprise API</td>
+                                    <td class="px-6 py-4 text-center text-neon-green font-bold">Available</td>
+                                    <td class="px-6 py-4 text-center text-gray-500">Limited/None</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="utility" class="py-24 border-t border-white/5">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
+                            <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
+                                 <div class="absolute inset-0 bg-neon-purple/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
+                                 <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=600&auto=format&fit=crop" 
+                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
+                                      alt="High Velocity RPC 3D Render">
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="coins" class="w-3 h-3"></i> SPL Tokens</div>
-                                    <div id="wallet-tokens" class="text-2xl font-bold font-display text-white">---</div>
-                                </div>
-                                <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="image" class="w-3 h-3"></i> NFTs / CNFTs</div>
-                                    <div id="wallet-nfts" class="text-2xl font-bold font-display text-white">---</div>
-                                </div>
-                            </div>
-                            <!-- Holdings -->
-                            <div class="glass-card rounded-xl overflow-hidden">
-                                <div class="bg-white/5 px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                    <h3 class="font-bold text-white flex items-center gap-2"><i data-lucide="list" class="text-neon-green"></i> Top Holdings</h3>
-                                </div>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left text-sm">
-                                        <thead class="bg-white/5 text-gray-400 font-display uppercase tracking-wider text-xs">
-                                            <tr>
-                                                <th class="px-6 py-3">Asset</th>
-                                                <th class="px-6 py-3">Type</th>
-                                                <th class="px-6 py-3 text-right">Balance</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="wallet-asset-list" class="divide-y divide-white/5 bg-transparent">
-                                            <tr><td colspan="3" class="px-6 py-4 text-center text-gray-500 italic">No assets found.</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- Recent Txs -->
-                            <div class="glass-card rounded-xl overflow-hidden">
-                                <div class="bg-white/5 px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                                    <h3 class="font-bold text-white flex items-center gap-2"><i data-lucide="history" class="text-neon-purple"></i> Recent Activity (Last 10)</h3>
-                                </div>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left text-sm">
-                                        <thead class="bg-white/5 text-gray-400 font-display uppercase tracking-wider text-xs">
-                                            <tr>
-                                                <th class="px-6 py-3">Signature</th>
-                                                <th class="px-6 py-3">Age</th>
-                                                <th class="px-6 py-3 text-right">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="wallet-tx-list" class="divide-y divide-white/5 bg-transparent">
-                                            <tr><td colspan="3" class="px-6 py-4 text-center text-gray-500 italic">No transactions found.</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="p-4 bg-neon-purple/10 border border-neon-purple/20 rounded-lg text-purple-200 text-sm">
-                                <i data-lucide="info" class="inline w-4 h-4 mr-1"></i> Data retrieved via Helius DAS & RPC.
-                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-purple">High-Velocity RPC</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Direct connection to premium validator nodes ensures data integrity. No caching, no latency, just raw ledger state.</p>
+                            <div class="mt-6 font-mono text-xs text-neon-purple flex items-center justify-center gap-2">STATUS: ONLINE <span class="w-2 h-2 rounded-full bg-neon-purple animate-pulse"></span></div>
                         </div>
 
+                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
+                             <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
+                                 <div class="absolute inset-0 bg-neon-green/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
+                                 <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600&auto=format&fit=crop" 
+                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
+                                      alt="Risk Heuristics 3D Render">
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-green">Risk Heuristics</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Proprietary algorithms scan for Mint Authority, Freeze capabilities, and Metadata Mutability to flag potential rugs instantly.</p>
+                            <div class="mt-6 font-mono text-xs text-neon-green text-center">VERSION: 4.2.0</div>
+                        </div>
+
+                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
+                             <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
+                                 <div class="absolute inset-0 bg-neon-cyan/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
+                                 <img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=600&auto=format&fit=crop" 
+                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
+                                      alt="Deep Indexing 3D Render">
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-cyan">Deep Indexing</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Full historical archival data access. Track wallet movements and token transfers from block 0 to present tip.</p>
+                            <div class="mt-6 font-mono text-xs text-neon-cyan flex items-center justify-center gap-2">DB_SIZE: 42PB</div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+             <section id="revenue" class="py-24 border-t border-white/5">
+                 <div class="max-w-5xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold font-display mb-4">VALUE ACCRUAL</h2>
+                        <p class="text-gray-400">How the protocol generates sustainable revenue.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                         <div class="p-8 border border-white/10 bg-white/5 rounded-xl">
+                            <h3 class="text-2xl font-bold text-white mb-4">Enterprise Subscriptions</h3>
+                            <p class="text-gray-400 mb-6">Institutional traders and dApps pay monthly fees (in USDC) to access our low-latency API and Geyser plugins.</p>
+                            <div class="h-2 w-full bg-white/10 rounded-full"><div class="h-full w-[80%] bg-neon-purple rounded-full"></div></div>
+                            <p class="text-right text-xs text-neon-purple mt-2">80% Revenue Retention</p>
+                        </div>
+                        <div class="p-8 border border-white/10 bg-white/5 rounded-xl">
+                            <h3 class="text-2xl font-bold text-white mb-4">Buyback & Burn</h3>
+                            <p class="text-gray-400 mb-6">30% of all protocol revenue is automatically routed to buy back $SCAN tokens from the open market and burn them.</p>
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 h-12 bg-black rounded flex items-center justify-center border border-white/10">USDC Revenue</div>
+                                <i data-lucide="arrow-right" class="w-6 h-6 text-gray-500"></i>
+                                <div class="flex-1 h-12 bg-black rounded flex items-center justify-center border border-neon-green/50 text-neon-green">$SCAN Burn</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tokenomics" class="py-24 relative border-t border-white/5">
+                <div class="text-center mb-16">
+                     <h2 class="text-5xl font-bold mb-4 tracking-tight font-display">TOKEN<span class="text-neon-cyan">METRICS</span></h2>
+                     <p class="text-gray-500 font-mono text-sm tracking-widest">TICKER: $SCAN // SUPPLY: 100,000,000</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="p-6 border border-white/10 bg-void relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-neon-green/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <span class="font-mono text-sm text-neon-green">LIQUIDITY_POOL</span>
+                                <span class="text-2xl font-bold">70%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-1 mt-4"><div class="bg-neon-green h-full w-[70%]"></div></div>
+                        </div>
+                        <div class="p-6 border border-white/10 bg-void relative overflow-hidden group">
+                             <div class="absolute inset-0 bg-neon-purple/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <span class="font-mono text-sm text-neon-purple">MARKETING_DAO</span>
+                                <span class="text-2xl font-bold">20%</span>
+                            </div>
+                             <div class="w-full bg-white/10 h-1 mt-4"><div class="bg-neon-purple h-full w-[20%]"></div></div>
+                        </div>
+                        <div class="p-6 border border-white/10 bg-void relative overflow-hidden group">
+                             <div class="absolute inset-0 bg-white/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                            <div class="flex justify-between items-center relative z-10">
+                                <span class="font-mono text-sm text-white">CEX_RESERVE</span>
+                                <span class="text-2xl font-bold">10%</span>
+                            </div>
+                             <div class="w-full bg-white/10 h-1 mt-4"><div class="bg-white h-full w-[10%]"></div></div>
+                        </div>
                     </div>
                     
-                    <!-- Empty State -->
-                    <div id="emptyState" class="text-center py-12">
-                        <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                            <i data-lucide="server" class="w-10 h-10 text-gray-600"></i>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="aspect-square border border-white/10 flex flex-col items-center justify-center p-4 hover:border-neon-cyan/50 transition-colors bg-white/5 relative overflow-hidden">
+                            <div class="text-4xl font-bold mb-2 text-neon-cyan">0%</div>
+                            <div class="text-[10px] font-mono text-gray-500 uppercase">Buy/Sell Tax</div>
+                            <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-cyan"></div>
                         </div>
-                        <p class="text-gray-500">Ready to query blockchain nodes...</p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Utility -->
-    <section id="utility" class="py-20 bg-void">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-2xl group">
-                    <div class="w-14 h-14 bg-neon-purple/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="zap" class="w-8 h-8 text-neon-purple"></i>
-                    </div>
-                    <h3 class="text-xl font-bold font-display mb-3">High-Velocity Nodes</h3>
-                    <p class="text-gray-400 leading-relaxed">Direct connection to premium validator nodes ensures your data is valid and faster than public RPCs.</p>
-                </div>
-                <div class="glass-card p-8 rounded-2xl group">
-                    <div class="w-14 h-14 bg-neon-green/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="shield-check" class="w-8 h-8 text-neon-green"></i>
-                    </div>
-                    <h3 class="text-xl font-bold font-display mb-3">Automated Audits</h3>
-                    <p class="text-gray-400 leading-relaxed">Our algorithms analyze Mint and Freeze authorities to instantly flag centralization risks.</p>
-                </div>
-                <div class="glass-card p-8 rounded-2xl group">
-                    <div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="code" class="w-8 h-8 text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold font-display mb-3">Deep Asset Scans</h3>
-                    <p class="text-gray-400 leading-relaxed">Proprietary metadata fetching standard to reveal hidden mutable fields in NFT and Token contracts.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tokenomics -->
-    <section id="tokenomics" class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-void via-neon-purple/5 to-void pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <h2 class="text-4xl font-bold font-display text-center mb-16">$SCAN Tokenomics</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-neon-green">Liquidity Pool</span>
-                            <span>70%</span>
+                        <div class="aspect-square border border-white/10 flex flex-col items-center justify-center p-4 hover:border-neon-purple/50 transition-colors bg-white/5 relative overflow-hidden">
+                            <i data-lucide="flame" class="w-8 h-8 text-neon-purple mb-2"></i>
+                            <div class="text-[10px] font-mono text-gray-500 uppercase">Liquidity Burned</div>
+                             <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-purple"></div>
                         </div>
-                        <div class="h-3 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-neon-green w-[70%] relative overflow-hidden">
-                                <div class="absolute inset-0 bg-white/30 animate-pulse"></div>
+                        <div class="aspect-square border border-white/10 flex flex-col items-center justify-center p-4 hover:border-neon-green/50 transition-colors bg-white/5 relative overflow-hidden">
+                            <i data-lucide="lock" class="w-8 h-8 text-neon-green mb-2"></i>
+                            <div class="text-[10px] font-mono text-gray-500 uppercase">Mint Revoked</div>
+                             <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-green"></div>
+                        </div>
+                         <div class="aspect-square border border-white/10 flex flex-col items-center justify-center p-4 hover:border-white/50 transition-colors bg-white/5 relative overflow-hidden">
+                            <i data-lucide="globe" class="w-8 h-8 text-white mb-2"></i>
+                            <div class="text-[10px] font-mono text-gray-500 uppercase">Renounced</div>
+                             <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap" class="py-24 border-t border-white/5">
+                <h2 class="text-4xl font-bold text-center mb-16 tracking-tight font-display">EXECUTION PLAN</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="relative p-8 border-l border-neon-green/30 bg-gradient-to-r from-neon-green/5 to-transparent hover:bg-neon-green/10 transition-colors">
+                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-neon-green rounded-full shadow-[0_0_10px_#00FF94]"></div>
+                        <h3 class="text-neon-green font-mono text-xl mb-4">PHASE_01</h3>
+                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
+                            <li>Deploy Audit Terminal</li>
+                            <li>Token Generation Event</li>
+                            <li>Community Seed Round</li>
+                            <li>Beta Access Launch</li>
+                            <li>gRPC Geyser Plugin V1</li>
+                        </ul>
+                    </div>
+                    <div class="relative p-8 border-l border-neon-purple/30 bg-gradient-to-r from-neon-purple/5 to-transparent opacity-80 hover:opacity-100 transition-opacity">
+                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-neon-purple rounded-full"></div>
+                        <h3 class="text-neon-purple font-mono text-xl mb-4">PHASE_02</h3>
+                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
+                            <li>Sniper Module Integration</li>
+                            <li>Premium Holders Access</li>
+                            <li>Mobile App Beta</li>
+                            <li>Strategic Partnerships</li>
+                            <li>ZK-Proof Verification</li>
+                        </ul>
+                    </div>
+                     <div class="relative p-8 border-l border-white/30 bg-gradient-to-r from-white/5 to-transparent opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-white rounded-full"></div>
+                        <h3 class="text-white font-mono text-xl mb-4">PHASE_03</h3>
+                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
+                            <li>Institutional API</li>
+                            <li>Cross-Chain Bridge</li>
+                            <li>DAO Governance</li>
+                            <li>Decentralized Infra</li>
+                            <li>AI Pattern Recognition</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+             <section class="py-24 border-t border-white/5">
+                <div class="max-w-6xl mx-auto px-6">
+                    <h2 class="text-4xl font-bold text-center mb-16 font-display">CORE CONTRIBUTORS</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="p-6 border border-white/10 bg-white/5 rounded text-center">
+                            <div class="w-20 h-20 bg-gray-800 rounded-full mx-auto mb-4 overflow-hidden border-2 border-neon-cyan"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Arch" alt="Arch"></div>
+                            <h3 class="font-bold text-white">0xArch</h3>
+                            <p class="text-xs text-neon-cyan font-mono">Lead Architect</p>
+                        </div>
+                        <div class="p-6 border border-white/10 bg-white/5 rounded text-center">
+                            <div class="w-20 h-20 bg-gray-800 rounded-full mx-auto mb-4 overflow-hidden border-2 border-neon-purple"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Cipher" alt="Cipher"></div>
+                            <h3 class="font-bold text-white">Cipher</h3>
+                            <p class="text-xs text-neon-purple font-mono">Security Engineer</p>
+                        </div>
+                         <div class="p-6 border border-white/10 bg-white/5 rounded text-center">
+                            <div class="w-20 h-20 bg-gray-800 rounded-full mx-auto mb-4 overflow-hidden border-2 border-neon-green"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Nova" alt="Nova"></div>
+                            <h3 class="font-bold text-white">Nova</h3>
+                            <p class="text-xs text-neon-green font-mono">Frontend Lead</p>
+                        </div>
+                         <div class="p-6 border border-white/10 bg-white/5 rounded text-center">
+                            <div class="w-20 h-20 bg-gray-800 rounded-full mx-auto mb-4 overflow-hidden border-2 border-white"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Vex" alt="Vex"></div>
+                            <h3 class="font-bold text-white">Vex</h3>
+                            <p class="text-xs text-white font-mono">Data Scientist</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="py-24 border-t border-white/5 relative z-10">
+                <div class="max-w-4xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold font-display mb-4">SYSTEM FAQ</h2>
+                        <p class="text-gray-400">Knowledge Base // Access Level 1</p>
+                    </div>
+                    <div class="space-y-4" id="faq-container">
+                        <div class="faq-item border border-white/10 bg-white/5 rounded overflow-hidden transition-all duration-300">
+                            <button class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 focus:outline-none" onclick="toggleFaq(this)">
+                                <span class="font-mono text-neon-cyan text-sm tracking-wide">QUERY: HOW_IS_RISK_CALCULATED?</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transform transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content h-0 overflow-hidden transition-all duration-300">
+                                <div class="px-6 pb-6 pt-2 text-gray-400 text-sm font-sans leading-relaxed border-t border-white/5 typing-cursor">
+                                    <div data-full-text="[ANSWER]: Our deterministic engine subtracts points for critical vectors: Active Mint Authority (-50), Freeze Authority (-25), and Mutable Metadata (-10). A score below 80 triggers a CAUTION state."></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item border border-white/10 bg-white/5 rounded overflow-hidden transition-all duration-300">
+                            <button class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 focus:outline-none" onclick="toggleFaq(this)">
+                                <span class="font-mono text-neon-cyan text-sm tracking-wide">QUERY: DATA_SOURCE_VALIDITY?</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transform transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content h-0 overflow-hidden transition-all duration-300">
+                                <div class="px-6 pb-6 pt-2 text-gray-400 text-sm font-sans leading-relaxed border-t border-white/5 typing-cursor">
+                                    <div data-full-text="[ANSWER]: We run our own Sentinel Nodes that query the Solana ledger directly via Helius RPC. We do not rely on third-party indexers for critical security data, ensuring 100% on-chain accuracy."></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item border border-white/10 bg-white/5 rounded overflow-hidden transition-all duration-300">
+                            <button class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 focus:outline-none" onclick="toggleFaq(this)">
+                                <span class="font-mono text-neon-cyan text-sm tracking-wide">QUERY: TOKEN_UTILITY?</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transform transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content h-0 overflow-hidden transition-all duration-300">
+                                <div class="px-6 pb-6 pt-2 text-gray-400 text-sm font-sans leading-relaxed border-t border-white/5 typing-cursor">
+                                    <div data-full-text="[ANSWER]: $SCAN is the utility token required to access Enterprise API rate limits, unlock the advanced 'Sniper' tools in the terminal, and participate in DAO governance."></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item border border-white/10 bg-white/5 rounded overflow-hidden transition-all duration-300">
+                            <button class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 focus:outline-none" onclick="toggleFaq(this)">
+                                <span class="font-mono text-neon-cyan text-sm tracking-wide">QUERY: IS_THIS_FINANCIAL_ADVICE?</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transform transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content h-0 overflow-hidden transition-all duration-300">
+                                <div class="px-6 pb-6 pt-2 text-gray-400 text-sm font-sans leading-relaxed border-t border-white/5 typing-cursor">
+                                    <div data-full-text="[ANSWER]: No. SolScanner provides data analytics for educational and informational purposes only. Always do your own research (DYOR) before trading."></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-neon-purple">Marketing & Partnerships</span>
-                            <span>20%</span>
-                        </div>
-                        <div class="h-3 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-neon-purple w-[20%]"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="font-bold text-white">CEX Listings & Team</span>
-                            <span>10%</span>
-                        </div>
-                        <div class="h-3 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-white w-[10%]"></div>
-                        </div>
-                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-card p-6 rounded-xl border-l-4 border-neon-purple">
-                        <div class="text-3xl font-bold font-display mb-1">Utility</div>
-                        <div class="text-sm text-gray-400">Access Tier 1</div>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border-l-4 border-neon-green">
-                        <div class="text-3xl font-bold font-display mb-1">Revoked</div>
-                        <div class="text-sm text-gray-400">Mint Auth</div>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border-l-4 border-white">
-                        <div class="text-3xl font-bold font-display mb-1">100%</div>
-                        <div class="text-sm text-gray-400">Lp Burned</div>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl border-l-4 border-gray-500">
-                        <div class="text-3xl font-bold font-display mb-1">1B</div>
-                        <div class="text-sm text-gray-400">Total Supply</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Roadmap -->
-    <section id="roadmap" class="py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold font-display text-center mb-16">Development Roadmap</h2>
-            <div class="relative space-y-12">
-                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-neon-purple via-neon-green to-void md:-ml-0.5"></div>
-                <div class="relative flex flex-col md:flex-row items-center gap-8">
-                    <div class="md:w-1/2 md:text-right order-2 md:order-1">
-                        <h3 class="text-xl font-bold text-neon-green">Phase 1: Launch</h3>
-                        <p class="text-gray-400 mt-2">Deploy Audit Terminal, Token Generation Event, Community building, CoinGecko Listing.</p>
-                    </div>
-                    <div class="absolute left-8 md:left-1/2 -ml-3 w-6 h-6 rounded-full bg-neon-green border-4 border-void shadow-[0_0_20px_#14F195] z-10"></div>
-                    <div class="md:w-1/2 order-2"></div>
+            <section id="community" class="py-24 border-t border-white/5 relative overflow-hidden">
+                <div class="absolute inset-0 bg-hex-pattern opacity-10 pointer-events-none"></div>
+                <div class="text-center mb-16 relative z-10">
+                     <h2 class="text-4xl font-bold font-display mb-4">COMMUNITY HUB</h2>
+                     <p class="text-gray-400">Join the fastest growing network of Solana developers and researchers.</p>
                 </div>
-                <div class="relative flex flex-col md:flex-row items-center gap-8">
-                    <div class="md:w-1/2 order-2 md:order-1"></div>
-                    <div class="absolute left-8 md:left-1/2 -ml-3 w-6 h-6 rounded-full bg-neon-purple border-4 border-void shadow-[0_0_20px_#9945FF] z-10"></div>
-                    <div class="md:w-1/2 order-2">
-                        <h3 class="text-xl font-bold text-neon-purple">Phase 2: Expansion</h3>
-                        <p class="text-gray-400 mt-2">Premium Holders Access, Sniper Bot Integration, Advanced Wallet Tracking, CEX Listings.</p>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 px-6 max-w-5xl mx-auto">
+                    <a href="#" class="group p-8 border border-white/10 bg-black hover:border-neon-cyan/50 transition-all flex items-center justify-between relative overflow-hidden">
+                        <div class="absolute inset-0 bg-neon-cyan/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-neon-cyan transition-colors font-display">TWITTER / X</h3>
+                            <p class="text-gray-500 font-mono text-xs mt-2">LATEST_INTEL_DROPS</p>
+                        </div>
+                        <i data-lucide="twitter" class="w-8 h-8 text-gray-600 group-hover:text-neon-cyan transition-colors relative z-10"></i>
+                    </a>
+                    <a href="#" class="group p-8 border border-white/10 bg-black hover:border-neon-purple/50 transition-all flex items-center justify-between relative overflow-hidden">
+                        <div class="absolute inset-0 bg-neon-purple/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-neon-purple transition-colors font-display">TELEGRAM</h3>
+                            <p class="text-gray-500 font-mono text-xs mt-2">ENCRYPTED_COMMS_CHANNEL</p>
+                        </div>
+                        <i data-lucide="send" class="w-8 h-8 text-gray-600 group-hover:text-neon-purple transition-colors relative z-10"></i>
+                    </a>
                 </div>
-                <div class="relative flex flex-col md:flex-row items-center gap-8">
-                    <div class="md:w-1/2 md:text-right order-2 md:order-1">
-                        <h3 class="text-xl font-bold text-white">Phase 3: Ecosystem</h3>
-                        <p class="text-gray-400 mt-2">Solana Mobile dApp, DAO Governance, Institutional Data API, Cross-chain expansion.</p>
-                    </div>
-                    <div class="absolute left-8 md:left-1/2 -ml-3 w-6 h-6 rounded-full bg-white border-4 border-void z-10"></div>
-                    <div class="md:w-1/2 order-2"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- FAQ Section -->
-    <section id="faq" class="py-24 relative z-10 bg-void/50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold font-display mb-4">Frequently Asked Questions</h2>
-                <p class="text-gray-400">Common questions about the SolScanner protocol.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="shield-alert" class="w-4 h-4 text-neon-purple"></i> How is the Risk Score calculated?</h3>
-                    <p class="text-sm text-gray-400">Our proprietary algorithm analyzes on-chain vectors including Mint Authority, Freeze Authority, and Metadata Mutability. Each risk factor deducts points from a perfect score of 100.</p>
-                </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-neon-green"></i> Where does the data come from?</h3>
-                    <p class="text-sm text-gray-400">We utilize a hybrid approach: Market data is fetched via DexScreener, while security and asset data is queried directly from the Solana ledger via Helius RPC nodes.</p>
-                </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="coins" class="w-4 h-4 text-white"></i> What is the utility of $SCAN?</h3>
-                    <p class="text-sm text-gray-400">$SCAN holders gain access to premium features such as uncapped API requests, the "Sniper" module, and governance voting rights within the DAO.</p>
-                </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4 text-gray-500"></i> Is this financial advice?</h3>
-                    <p class="text-sm text-gray-400">No. SolScanner provides data analytics for educational and informational purposes only. Always do your own research (DYOR) before trading.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <!-- Community Hub -->
-    <section id="community" class="py-24 relative overflow-hidden bg-black/40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold font-display mb-4">Community Hub</h2>
-                <p class="text-gray-400">Join the fastest growing network of Solana developers and researchers.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <a href="#" class="col-span-1 md:col-span-2 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-neon-purple/50">
-                    <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10 flex h-full flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                            <div class="p-3 bg-black/50 rounded-xl border border-white/10"><i data-lucide="twitter" class="w-8 h-8 text-white"></i></div>
-                            <span class="px-3 py-1 rounded-full bg-neon-purple/20 text-neon-purple text-xs font-bold border border-neon-purple/30">Latest Alpha</span>
-                        </div>
-                        <div class="mt-8">
-                            <h3 class="text-3xl font-bold text-white mb-2">Follow us on X</h3>
-                            <p class="text-gray-400 max-w-md">Get real-time updates, security alerts, and ecosystem news delivered straight to your feed.</p>
-                            <div class="mt-4 flex items-center gap-2 text-sm font-bold text-white group-hover:translate-x-2 transition-transform">@SolanaScanner <i data-lucide="arrow-right" class="w-4 h-4"></i></div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="col-span-1 row-span-2 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-blue-400/50">
-                    <div class="absolute inset-0 bg-gradient-to-b from-blue-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10 flex h-full flex-col justify-between">
-                        <div class="flex justify-between items-start">
-                             <div class="p-3 bg-black/50 rounded-xl border border-white/10"><i data-lucide="send" class="w-8 h-8 text-blue-400"></i></div>
-                             <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                        </div>
-                        <div class="mt-12">
-                            <h3 class="text-3xl font-bold text-white mb-2">Telegram</h3>
-                            <p class="text-gray-400 mb-6">Join the discussion. Instant push notifications for major wallet movements.</p>
-                            <span class="inline-block px-6 py-3 rounded-xl bg-blue-500 text-white font-bold hover:bg-blue-400 transition-colors w-full text-center">Join Channel</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="documentation.html" class="col-span-1 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-neon-green/50">
-                    <div class="absolute inset-0 bg-gradient-to-br from-neon-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                         <div class="p-3 bg-black/50 rounded-xl border border-white/10 w-fit mb-6"><i data-lucide="book-open" class="w-6 h-6 text-neon-green"></i></div>
-                        <h3 class="text-2xl font-bold text-white">Whitepaper</h3>
-                        <p class="text-gray-400 text-sm mt-2">Read the technical documentation.</p>
-                    </div>
-                </a>
-                <div class="col-span-1 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8">
-                    <div class="relative z-10">
-                        <div class="p-3 bg-black/50 rounded-xl border border-white/10 w-fit mb-6"><i data-lucide="mail" class="w-6 h-6 text-white"></i></div>
-                        <h3 class="text-2xl font-bold text-white">Intel Brief</h3>
-                        <p class="text-gray-400 text-sm mt-2 mb-4">Weekly deep dives into the ecosystem.</p>
-                        <div class="flex gap-2">
-                            <input type="email" placeholder="Email address" class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon-green transition-colors">
-                            <button class="bg-white/10 text-white p-2 rounded-lg hover:bg-white/20 transition-colors"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mega Footer -->
-    <footer class="border-t border-white/10 bg-black pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
+    <footer class="border-t border-white/10 bg-black/90 pt-16 pb-8 backdrop-blur-lg relative z-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded bg-gradient-to-br from-neon-purple to-neon-green flex items-center justify-center">
                             <i data-lucide="radar" class="text-void w-4 h-4 fill-current"></i>
                         </div>
-                        <span class="text-lg font-bold font-display tracking-wider">SOL<span class="text-neon-green">SCANNER</span></span>
+                        <span class="text-lg font-bold font-display tracking-wider text-white">SOL<span class="text-neon-green">SCANNER</span></span>
                     </div>
-                    <p class="text-gray-500 text-sm">Providing institutional clarity for the decentralized future.</p>
+                    <p class="text-gray-500 text-sm font-mono leading-relaxed mb-6 max-w-xs">
+                        Providing institutional clarity for the decentralized future. Direct-to-ledger indexing for uncompromising accuracy.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="h-8 w-20 bg-white/10 rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer border border-white/5 hover:border-white/20"><span class="text-[10px] font-mono text-gray-400">CERTIK</span></div>
+                        <div class="h-8 w-20 bg-white/10 rounded flex items-center justify-center grayscale hover:grayscale-0 transition-all cursor-pointer border border-white/5 hover:border-white/20"><span class="text-[10px] font-mono text-gray-400">HACKEN</span></div>
+                    </div>
                 </div>
+                
                 <div>
-                    <h4 class="font-bold mb-4 text-white">Product</h4>
-                    <ul class="space-y-2 text-gray-500 text-sm">
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Terminal</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Enterprise API</a></li>
-                        <li><a href="documentation.html" class="hover:text-neon-green transition-colors">Whitepaper</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Status</a></li>
+                    <h4 class="font-bold mb-4 text-white font-mono text-xs tracking-widest uppercase text-neon-cyan">Product</h4>
+                    <ul class="space-y-2 text-gray-500 text-sm font-mono">
+                        <li><a href="#" class="hover:text-white transition-colors">Terminal</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Enterprise API</a></li>
+                        <li><a href="documentation.html" class="hover:text-white transition-colors">Whitepaper</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Status</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-4 text-white">Community</h4>
-                    <ul class="space-y-2 text-gray-500 text-sm">
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Governance</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Risk Report</a></li>
+                    <h4 class="font-bold mb-4 text-white font-mono text-xs tracking-widest uppercase text-neon-purple">Developers</h4>
+                    <ul class="space-y-2 text-gray-500 text-sm font-mono">
+                        <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">GitHub SDK</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Keys</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Webhooks</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-4 text-white">Legal</h4>
-                    <ul class="space-y-2 text-gray-500 text-sm">
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-neon-green transition-colors">Disclaimer</a></li>
+                    <h4 class="font-bold mb-4 text-white font-mono text-xs tracking-widest uppercase text-neon-green">Resources</h4>
+                    <ul class="space-y-2 text-gray-500 text-sm font-mono">
+                        <li><a href="#" class="hover:text-white transition-colors">Brand Assets</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Media Kit</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-600 text-xs">© 2024 SolScanner. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <i data-lucide="github" class="w-4 h-4 text-gray-600 hover:text-white cursor-pointer"></i>
-                    <i data-lucide="twitter" class="w-4 h-4 text-gray-600 hover:text-white cursor-pointer"></i>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
+                     <p class="text-gray-600 text-xs font-mono">© 2024 SolScanner Protocol.</p>
+                     <div class="flex gap-2">
+                        <input type="email" placeholder="NEWSLETTER_SIGNUP" class="bg-white/5 border border-white/10 rounded px-3 py-1 text-xs font-mono w-48 focus:outline-none focus:border-neon-green text-white">
+                        <button class="bg-white/10 text-white px-3 py-1 rounded text-xs font-mono hover:bg-white/20 transition-colors">SUBMIT</button>
+                     </div>
+                </div>
+                
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i data-lucide="github" class="w-4 h-4"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-white transition-colors"><i data-lucide="disc" class="w-4 h-4"></i></a> 
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Main Logic -->
+    </div>
+
     <script src="main.js"></script>
     <script>
-        // Preloader Logic
+        // Init Preloader & Tilt
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.body.classList.remove('overflow-hidden');
-            }, 2000);
-
             const preloader = document.getElementById('preloader');
-            const bar = document.getElementById('loader-progress');
-            const text = document.getElementById('loader-text');
+            const logs = document.getElementById('system-logs');
+            const enterBtn = document.getElementById('enter-btn');
+            const overlay = document.getElementById('access-overlay');
+            const bootSequence = document.getElementById('boot-sequence');
+            const cursorLine = document.getElementById('cursor-line');
             
-            setTimeout(() => { text.textContent = "ESTABLISHING RPC CONNECTION..." }, 500);
-            setTimeout(() => { text.textContent = "SYNCING NODE DATA..." }, 1200);
-            setTimeout(() => { text.textContent = "ACCESS GRANTED" }, 1800);
+            // Simulated Boot Log Sequence
+            const bootLogs = [
+                { t: "INITIALIZING KERNEL...", type: "" },
+                { t: "LOADING SOL.OS MODULES...", type: "" },
+                { t: "> MOUNTING FILESYSTEM... [OK]", type: "boot-success" },
+                { t: "> CHECKING MEMORY INTEGRITY... [OK]", type: "boot-success" },
+                { t: "> ESTABLISHING SECURE RPC UPLINK...", type: "boot-warn" },
+                { t: "  - NODE 1: CONNECTED (14ms)", type: "boot-success" },
+                { t: "  - NODE 2: CONNECTED (21ms)", type: "boot-success" },
+                { t: "  - NODE 3: CONNECTED (18ms)", type: "boot-success" },
+                { t: "> VERIFYING CRYPTOGRAPHIC KEYS... [OK]", type: "boot-success" },
+                { t: "> LOADING NEURAL ASSETS... [OK]", type: "boot-success" },
+                { t: "SYSTEM READY FOR USER INPUT.", type: "boot-success font-bold" }
+            ];
 
-            setTimeout(() => {
-                bar.style.width = '100%';
-            }, 100);
+            let logIndex = 0;
+            function typeLog() {
+                if (logIndex < bootLogs.length) {
+                    const log = bootLogs[logIndex];
+                    const line = document.createElement('span');
+                    line.className = `boot-line ${log.type}`;
+                    line.innerText = log.t;
+                    bootSequence.appendChild(line);
+                    
+                    const terminal = document.getElementById('terminal-window');
+                    terminal.scrollTop = terminal.scrollHeight;
+                    
+                    logIndex++;
+                    setTimeout(typeLog, Math.random() * 400 + 300); 
+                } else {
+                    cursorLine.classList.remove('hidden');
+                    document.getElementById('boot-status').textContent = "WAITING FOR USER...";
+                    setTimeout(() => {
+                         overlay.classList.remove('opacity-0', 'pointer-events-none');
+                    }, 800);
+                }
+            }
+            // Start sequence after 1 second delay
+            setTimeout(typeLog, 1000);
 
-            setTimeout(() => {
-                preloader.classList.add('opacity-0');
+            // Click Handler for Transition
+            enterBtn.addEventListener('click', () => {
+                preloader.style.opacity = '0';
+                
+                // Add class to trigger CSS transition
+                const app = document.getElementById('app-interface');
+                if(app) {
+                    app.classList.remove('system-offline');
+                    app.classList.add('system-online');
+                    document.getElementById('crt-flash-overlay').classList.add('flash-active');
+                }
+                
                 setTimeout(() => {
                     preloader.style.display = 'none';
-                }, 1000);
-            }, 2200);
+                    document.body.classList.remove('overflow-hidden');
+                    
+                    // Start Fake Logs in Sidebar
+                    setInterval(() => {
+                        if(logs.children.length > 8) logs.removeChild(logs.firstElementChild);
+                        const msg = [
+                            "SYNCING BLOCK 23891...", "VERIFYING SIGNATURE...", "HANDSHAKE_OK", 
+                            "PACKET_RECEIVED", "DECRYPTING_METADATA...", "PING: 14ms"
+                        ][Math.floor(Math.random()*6)];
+                        const div = document.createElement('div');
+                        div.className = "text-[9px] text-gray-500 font-mono";
+                        div.innerHTML = `<span class="text-neon-cyan">></span> ${msg}`;
+                        logs.appendChild(div);
+                    }, 800);
+                }, 1000); 
+            });
+
+            // 3D Tilt Logic
+            document.querySelectorAll('.hud-panel, .data-box').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--x', `${x}px`);
+                    card.style.setProperty('--y', `${y}px`);
+                    
+                    const xPct = (x / rect.width - 0.5) * 20;
+                    const yPct = (y / rect.height - 0.5) * -20;
+                    card.style.transform = `perspective(1000px) rotateX(${yPct}deg) rotateY(${xPct}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'none';
+                });
+            });
+
+            // Smooth Scroll for Nav Links
+             document.querySelectorAll('.scroll-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
+                        const startPosition = window.pageYOffset;
+                        const distance = targetPosition - startPosition;
+                        let startTime = null;
+                        
+                        function animation(currentTime) {
+                            if (startTime === null) startTime = currentTime;
+                            const timeElapsed = currentTime - startTime;
+                            const duration = 1200; 
+                            const ease = (t, b, c, d) => {
+                                t /= d/2;
+                                if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;
+                                t--;
+                                return c/2 * ( -Math.pow( 2, -10 * t ) + 2 ) + b;
+                            };
+                            window.scrollTo(0, ease(timeElapsed, startPosition, distance, duration));
+                            if (timeElapsed < duration) requestAnimationFrame(animation);
+                            else {
+                                // Flash Effect on arrival
+                                targetElement.classList.add('warp-impact');
+                                setTimeout(() => targetElement.classList.remove('warp-impact'), 300);
+                            }
+                        }
+                        // Trigger Warp Effect
+                        document.body.classList.add('hyperspace-active');
+                        setTimeout(() => document.body.classList.remove('hyperspace-active'), 1000);
+                        
+                        requestAnimationFrame(animation);
+                    }
+                });
+            });
         });
+
+        // FAQ Toggle Logic
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            // FIX: Support both <i> (before load) and <svg> (after Lucide load)
+            const icon = button.querySelector('i') || button.querySelector('svg');
+            
+            // Safety check
+            if (!content) return;
+
+            const textEl = content.querySelector('.typing-cursor');
+            if (!textEl) return;
+            
+            const divWithText = textEl.querySelector('div'); 
+            if (!divWithText) return;
+            
+            const isOpen = content.style.height && content.style.height !== '0px';
+
+            if (isOpen) {
+                // Close
+                content.style.height = '0px';
+                if(icon) icon.style.transform = 'rotate(0deg)';
+                button.classList.remove('bg-white/10');
+                if (textEl.typingInterval) clearInterval(textEl.typingInterval);
+            } else {
+                // Open
+                if(icon) icon.style.transform = 'rotate(180deg)';
+                button.classList.add('bg-white/10');
+                
+                // Retrieve full text
+                const fullText = divWithText.dataset.fullText;
+                
+                // Reset to calculate height
+                divWithText.textContent = fullText; 
+                const height = content.scrollHeight;
+                content.style.height = height + 'px';
+                
+                // Clear for animation
+                divWithText.textContent = ""; 
+                
+                // Animation
+                let i = 0;
+                if (textEl.typingInterval) clearInterval(textEl.typingInterval);
+                textEl.typingInterval = setInterval(() => {
+                    if (i < fullText.length) {
+                        divWithText.textContent += fullText.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(textEl.typingInterval);
+                    }
+                }, 15); 
+            }
+        }
     </script>
 </body>
 </html>
