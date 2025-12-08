@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Terminal Uplink</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF', purple: '#BD00FF', green: '#00FF94', red: '#FF2A6D' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-white font-sans h-screen overflow-hidden flex flex-col">
+
+    <div class="fixed inset-0 z-[-10] pointer-events-none opacity-20 bg-[linear-gradient(rgba(0,240,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+
+    <nav class="border-b border-white/10 bg-[#050508] h-16 flex items-center justify-between px-6 z-50">
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <i data-lucide="aperture" class="text-neon-cyan w-5 h-5 group-hover:rotate-180 transition-transform duration-500"></i>
+                <span class="font-bold tracking-[0.2em] text-sm">TERMINAL_V5.0</span>
+            </a>
+            <div class="h-4 w-px bg-white/10"></div>
+            <div class="flex gap-4 text-[10px] font-mono tracking-widest text-gray-400">
+                <span class="text-neon-green flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse"></div> MAINNET</span>
+                <span>BLOCK: 249,102,991</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 hover:bg-white/5 rounded text-neon-cyan border border-neon-cyan/30"><i data-lucide="settings" class="w-4 h-4"></i></button>
+            <button class="px-4 py-1.5 bg-neon-purple/10 border border-neon-purple/50 text-neon-purple text-xs font-mono hover:bg-neon-purple hover:text-white transition-colors">CONNECT_WALLET</button>
+        </div>
+    </nav>
+
+    <main class="flex-1 flex overflow-hidden">
+        
+        <aside class="w-16 border-r border-white/10 bg-[#050508] flex flex-col items-center py-6 gap-6">
+            <button class="p-3 bg-neon-cyan/10 text-neon-cyan rounded-lg"><i data-lucide="search" class="w-5 h-5"></i></button>
+            <button class="p-3 text-gray-500 hover:text-white transition-colors"><i data-lucide="crosshair" class="w-5 h-5"></i></button>
+            <button class="p-3 text-gray-500 hover:text-white transition-colors"><i data-lucide="history" class="w-5 h-5"></i></button>
+            <button class="p-3 text-gray-500 hover:text-white transition-colors"><i data-lucide="bookmark" class="w-5 h-5"></i></button>
+            <div class="mt-auto p-3 text-gray-500 hover:text-neon-red transition-colors cursor-pointer"><i data-lucide="log-out" class="w-5 h-5"></i></div>
+        </aside>
+
+        <div class="flex-1 p-8 overflow-y-auto relative">
+            <div class="max-w-4xl mx-auto h-full flex flex-col justify-center">
+                
+                <div class="mb-8 text-center">
+                    <h1 class="text-4xl font-bold font-display mb-2">TARGET DESIGNATION</h1>
+                    <p class="text-gray-500 font-mono text-xs">ENTER_MINT_ADDRESS_OR_WALLET_HASH</p>
+                </div>
+
+                <div class="relative group mb-12">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple opacity-30 blur group-hover:opacity-50 transition duration-500"></div>
+                    <div class="relative flex bg-[#0A0A12] border border-white/20 p-2 rounded-lg">
+                        <div class="flex items-center justify-center pl-4 pr-2 border-r border-white/10">
+                            <span class="font-mono text-neon-cyan">></span>
+                        </div>
+                        <input type="text" class="w-full bg-transparent text-white font-mono px-4 py-3 focus:outline-none placeholder-gray-700" placeholder="So11111111111111111111111111111111111111112">
+                        <button class="px-8 bg-neon-cyan text-black font-bold font-mono tracking-widest hover:bg-white transition-colors rounded">
+                            SCAN
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 opacity-50 pointer-events-none">
+                    <div class="p-6 border border-white/10 bg-white/5 rounded-lg border-dashed">
+                        <div class="h-8 w-8 bg-white/10 rounded mb-4"></div>
+                        <div class="h-4 w-24 bg-white/10 rounded mb-2"></div>
+                        <div class="h-3 w-full bg-white/5 rounded"></div>
+                    </div>
+                     <div class="p-6 border border-white/10 bg-white/5 rounded-lg border-dashed">
+                        <div class="h-8 w-8 bg-white/10 rounded mb-4"></div>
+                        <div class="h-4 w-24 bg-white/10 rounded mb-2"></div>
+                        <div class="h-3 w-full bg-white/5 rounded"></div>
+                    </div>
+                     <div class="p-6 border border-white/10 bg-white/5 rounded-lg border-dashed">
+                        <div class="h-8 w-8 bg-white/10 rounded mb-4"></div>
+                        <div class="h-4 w-24 bg-white/10 rounded mb-2"></div>
+                        <div class="h-3 w-full bg-white/5 rounded"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8 font-mono text-[10px] text-gray-600">
+                    AWAITING INPUT... // SYSTEM IDLE
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

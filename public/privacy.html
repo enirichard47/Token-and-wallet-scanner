@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Privacy Policy</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-gray-300 font-mono min-h-screen flex flex-col">
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="shield" class="text-neon-cyan w-6 h-6"></i>
+                <span class="font-bold tracking-[0.2em] text-lg text-white">PRIVACY_<span class="text-neon-cyan">POLICY</span></span>
+            </a>
+            <span class="text-xs text-gray-500">ENCRYPTION: AES-256</span>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full">
+        
+        <div class="border border-white/10 bg-[#0A0A12] p-8 md:p-12 rounded-lg shadow-2xl relative overflow-hidden">
+             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent opacity-50"></div>
+
+            <h1 class="text-3xl font-bold text-white mb-8 font-display">Data Retention & Privacy</h1>
+            
+            <div class="space-y-8 text-sm leading-relaxed">
+                
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">1. PUBLIC LEDGER DATA</h2>
+                    <p>SolScanner aggregates data from the Solana blockchain. <span class="text-white">This data is public, immutable, and permanent.</span> We do not control this data, and we cannot delete transaction history, wallet balances, or token metadata from the blockchain, even upon request.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">2. INFORMATION WE COLLECT</h2>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-400 mt-2">
+                        <li><strong class="text-white">On-Chain Data:</strong> Wallet addresses, transaction signatures, and token interactions.</li>
+                        <li><strong class="text-white">Technical Data:</strong> IP address, browser type, and device info (for DDoS protection and rate limiting).</li>
+                        <li><strong class="text-white">Usage Data:</strong> Which tokens you search for and which features you utilize.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">3. LOCAL STORAGE</h2>
+                    <p>We use local storage (cookies) solely to:</p>
+                    <ul class="list-disc pl-6 space-y-1 text-gray-400 mt-2">
+                        <li>Store your "Watchlist" locally on your device.</li>
+                        <li>Remember your theme preferences and UI settings.</li>
+                        <li>Manage your API Key session if logged in.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">4. THIRD-PARTY SHARING</h2>
+                    <p>We do not sell your personal data. We may share anonymized, aggregated traffic data with our infrastructure providers (e.g., RPC node providers, hosting services) strictly to maintain service stability.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">5. GDPR / CCPA NOTICE</h2>
+                    <p>Because blockchain data is immutable, the "Right to Erasure" (Right to be Forgotten) cannot apply to data stored on the Solana blockchain itself. For off-chain data (e.g., your email if you subscribed to our newsletter), you may contact <a href="#" class="text-neon-cyan hover:underline">privacy@solscanner.io</a> to request deletion.</p>
+                </section>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
+                <a href="index.html" class="text-neon-cyan hover:underline">&lt; RETURN_TO_TERMINAL</a>
+                <div class="text-[10px] font-mono text-gray-600">ID: DOC_PRIV_V4.2</div>
+            </div>
+        </div>
+    </main>
+    
+    <script>lucide.createIcons();</script>
+</body>
+</html>

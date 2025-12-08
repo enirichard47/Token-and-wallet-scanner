@@ -3,574 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whitepaper | SolScanner Protocol</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
+    <title>SolScanner | Developer Docs</title>
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Tailwind Config -->
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        void: '#050510',
-                        glass: 'rgba(255, 255, 255, 0.05)',
-                        neon: {
-                            purple: '#9945FF', /* Solana Purple */
-                            cyan: '#14F195',   /* Solana Green */
-                            green: '#14F195',
-                            red: '#ff3366',
-                        }
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                    },
-                    animation: {
-                        'spin-slow': 'spin 3s linear infinite',
-                        'spin-reverse': 'spin-reverse 2s linear infinite',
-                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        'spin-reverse': {
-                            '0%': { transform: 'rotate(0deg)' },
-                            '100%': { transform: 'rotate(-360deg)' },
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px #9945FF' },
-                            '50%': { opacity: .5, boxShadow: '0 0 5px #9945FF' },
-                        }
-                    }
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF', purple: '#BD00FF', green: '#00FF94', red: '#FF2A6D' } }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            background-color: #050510;
-            color: #e5e7eb;
-            overflow: hidden; /* App-like structure, also helps preloader */
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050510;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #9945FF;
-        }
-        
-        .glass-sidebar {
-            background: rgba(5, 5, 16, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .code-block {
-            background: #0a0a14;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-        
-        .glow-text {
-            text-shadow: 0 0 20px rgba(153, 69, 255, 0.4);
-        }
-
-        /* Active Nav State */
-        .nav-link.active {
-            background-color: rgba(153, 69, 255, 0.1); /* neon-purple/10 */
-            color: #14F195; /* neon-green */
-            font-weight: 600;
-            border: 1px solid rgba(153, 69, 255, 0.2);
-            border-left: 3px solid #14F195;
-        }
-
-        /* Specific Preloader Styles */
-        .loader-ring {
-            border: 2px solid transparent;
-            border-top-color: #9945FF;
-            border-radius: 50%;
-        }
-        .loader-ring-inner {
-            border: 2px solid transparent;
-            border-bottom-color: #14F195;
-            border-radius: 50%;
-        }
-    </style>
 </head>
-<body class="antialiased selection:bg-neon-green selection:text-black">
+<body class="bg-void text-white selection:bg-neon-cyan selection:text-black font-sans min-h-screen flex flex-col">
 
-    <!-- ================= PRELOADER ================= -->
-    <div id="preloader" class="fixed inset-0 z-[100] bg-void flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out">
-        <!-- Glowing Center -->
-        <div class="relative w-24 h-24 mb-8">
-            <div class="absolute inset-0 loader-ring animate-spin shadow-[0_0_15px_rgba(153,69,255,0.5)]"></div>
-            <div class="absolute inset-2 loader-ring-inner animate-spin-reverse shadow-[0_0_15px_rgba(20,241,149,0.5)]"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="file-text" class="text-white w-8 h-8 animate-pulse"></i>
+    <div class="fixed inset-0 z-[-20] pointer-events-none"><div class="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(0,240,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div></div>
+    <div class="fixed inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-[-10]"></div>
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="aperture" class="text-neon-cyan w-6 h-6 group-hover:rotate-180 transition-transform duration-500"></i>
+                <span class="font-bold tracking-[0.2em] text-lg">SOL<span class="text-neon-cyan">SCANNER</span>_DOCS</span>
+            </a>
+            <div class="flex gap-6 font-mono text-xs tracking-widest text-gray-400">
+                <a href="index.html" class="hover:text-neon-cyan transition-colors">TERMINAL</a>
+                <a href="api-keys.html" class="hover:text-neon-cyan transition-colors">DASHBOARD</a>
             </div>
         </div>
-        <!-- Terminal Text -->
-        <div class="h-6 mb-4">
-            <span id="loader-text" class="font-mono text-sm tracking-widest text-neon-green">LOADING WHITEPAPER...</span>
-        </div>
-        <!-- Progress Bar -->
-        <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-            <div id="loader-progress" class="h-full bg-gradient-to-r from-neon-purple to-neon-green w-0 transition-all duration-[2000ms] ease-out"></div>
-        </div>
-    </div>
-    <!-- ================= END PRELOADER ================= -->
+    </nav>
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex-1 max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-12 p-6 py-12">
         
-        <!-- Sidebar Navigation -->
-        <aside class="hidden lg:flex flex-col w-72 glass-sidebar h-full fixed left-0 top-0 z-50 shadow-2xl shadow-purple-900/10">
-            <div class="h-20 flex items-center px-8 border-b border-white/10">
-                <a href="index.html" class="flex items-center gap-2 group transition-opacity hover:opacity-80">
-                    <div class="w-8 h-8 rounded bg-gradient-to-br from-neon-purple to-neon-green flex items-center justify-center">
-                        <i data-lucide="radar" class="text-void w-4 h-4 fill-current"></i>
-                    </div>
-                    <span class="font-bold font-display text-white tracking-wide">SOL<span class="text-neon-green">SCANNER</span></span>
-                </a>
+        <aside class="w-full md:w-64 flex-shrink-0 space-y-8">
+            <div class="p-4 border border-white/10 bg-white/5 rounded-lg">
+                <h3 class="font-mono text-xs text-neon-cyan mb-4 tracking-widest">CORE_MODULES</h3>
+                <ul class="space-y-3 text-sm font-mono text-gray-400">
+                    <li><a href="#" class="text-white hover:text-neon-cyan flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3 text-neon-cyan"></i> Introduction</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Authentication</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Rate Limits</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Errors & Codes</a></li>
+                </ul>
             </div>
-            
-            <div class="flex-1 overflow-y-auto py-8 px-6 space-y-8">
-                <div>
-                    <p class="px-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Protocol Overview</p>
-                    <nav class="space-y-1">
-                        <a href="#executive-summary" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">Executive Summary</a>
-                        <a href="#architecture" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">Sentinel Architecture</a>
-                        <a href="#risk-engine" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">Risk Analysis Engine</a>
-                    </nav>
-                </div>
-
-                <div>
-                    <p class="px-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Token Economy</p>
-                    <nav class="space-y-1">
-                        <a href="#token-utility" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">$SCAN Utility</a>
-                        <a href="#governance" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">Governance DAO</a>
-                    </nav>
-                </div>
-                
-                <div>
-                    <p class="px-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Developer Access</p>
-                    <nav class="space-y-1">
-                        <a href="#api-reference" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">REST API Reference</a>
-                        <a href="#rate-limits" class="nav-link block px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 text-sm transition-all duration-200">Enterprise Limits</a>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="p-6 border-t border-white/10">
-                <a href="index.html" class="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-white/20 hover:bg-white/5 text-sm font-medium transition-colors text-white hover:border-neon-green/50">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Terminal
-                </a>
+            <div class="p-4 border border-white/10 bg-white/5 rounded-lg">
+                <h3 class="font-mono text-xs text-neon-purple mb-4 tracking-widest">ENDPOINTS</h3>
+                <ul class="space-y-3 text-sm font-mono text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors">GET /token/audit</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">GET /wallet/profile</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">POST /scan/batch</a></li>
+                </ul>
             </div>
         </aside>
 
-        <!-- Main Content Area (Scroll Container) -->
-        <main id="main-content" class="flex-1 overflow-y-auto relative lg:ml-72 bg-void scroll-smooth">
-            <!-- Background Glow -->
-            <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-                <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-neon-purple/10 rounded-full blur-[120px]"></div>
-                <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-neon-green/5 rounded-full blur-[100px]"></div>
+        <main class="flex-1 min-w-0">
+            <div class="mb-12 border-b border-white/10 pb-8">
+                <h1 class="text-5xl font-bold font-display mb-4">API Introduction</h1>
+                <p class="text-gray-400 text-lg leading-relaxed max-w-3xl">
+                    The SolScanner Enterprise API provides programmatic access to our proprietary risk engine. Direct-to-ledger indexing ensures sub-50ms latency for critical authority checks.
+                </p>
             </div>
 
-            <div class="relative z-10 max-w-5xl mx-auto px-6 py-16 lg:px-12 lg:py-24">
-                
-                <!-- Header -->
-                <div class="mb-16">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-400 mb-6">
-                        <span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
-                        Whitepaper v2.1.0 (Live)
-                    </div>
-                    <h1 class="text-5xl md:text-6xl font-bold font-display text-white mb-6 glow-text">SolScanner Protocol</h1>
-                    <p class="text-xl text-gray-400 leading-relaxed max-w-3xl">
-                        A decentralized, enterprise-grade analytics infrastructure designed to bring institutional clarity to the Solana ecosystem. Leveraging proprietary indexing nodes for millisecond-latency audits.
-                    </p>
-                </div>
-
-                <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-12"></div>
-
-                <!-- Executive Summary -->
-                <section id="executive-summary" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="layers" class="text-neon-purple"></i> Executive Summary
+            <div class="space-y-12">
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-neon-cyan">01.</span> Authentication
                     </h2>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        The Solana blockchain processes thousands of transactions per second, creating a massive data ingestion challenge for traders and auditors. Existing public RPCs rely on aggressive caching, often delivering stale data regarding token authorities and liquidity states.
-                    </p>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        SolScanner solves this via <strong>Direct Ledger Querying</strong>. By maintaining a bespoke cluster of "Sentinel Nodes," we bypass standard RPC bottlenecks to read the raw ledger state directly. This allows us to detect changes in Mint Authorities, Freeze Authorities, and Metadata Mutability in real-time—often before they propagate to standard block explorers.
-                    </p>
+                    <p class="text-gray-400 mb-6 font-mono text-sm">Include your API key in the header of all requests.</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                        <div class="p-6 rounded-xl border border-white/10 bg-white/5">
-                            <div class="text-2xl font-bold text-neon-green mb-1">40ms</div>
-                            <div class="text-sm text-gray-500">Average Latency</div>
-                        </div>
-                        <div class="p-6 rounded-xl border border-white/10 bg-white/5">
-                            <div class="text-2xl font-bold text-neon-purple">100%</div>
-                            <div class="text-sm text-gray-500">Uptime SLA</div>
-                        </div>
-                        <div class="p-6 rounded-xl border border-white/10 bg-white/5">
-                            <div class="text-2xl font-bold text-white">99.9%</div>
-                            <div class="text-sm text-gray-500">Risk Detection Rate</div>
-                        </div>
+                    <div class="bg-[#0A0A12] border border-white/10 rounded-lg p-6 relative group">
+                        <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-600">BASH</div>
+                        <pre class="font-mono text-sm text-gray-300 overflow-x-auto">
+<span class="text-neon-purple">curl</span> -X GET https://api.solscanner.io/v1/token/audit/So11111111111111111111111111111111111111112 \
+  -H <span class="text-neon-green">"X-API-KEY: sk_live_51M..."</span> \
+  -H "Content-Type: application/json"</pre>
                     </div>
                 </section>
 
-                <!-- Architecture -->
-                <section id="architecture" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="server" class="text-neon-green"></i> Sentinel Architecture
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-neon-cyan">02.</span> Token Audit Response
                     </h2>
-                    <p class="text-gray-400 leading-7 mb-8">
-                        Our infrastructure creates a hybrid data layer combining high-velocity RPC calls with off-chain indexing.
-                    </p>
-
-                    <div class="space-y-6">
-                        <div class="flex gap-6 p-6 rounded-xl border border-white/10 bg-black/40">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-neon-purple/20 flex items-center justify-center border border-neon-purple/30">
-                                <span class="font-bold text-neon-purple">1</span>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white mb-2">Ingestion Layer (Rust Geyser)</h3>
-                                <p class="text-sm text-gray-400">Custom Rust plugins hook directly into the validator Geyser interface, streaming account updates via gRPC rather than polling via JSON-RPC.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-6 p-6 rounded-xl border border-white/10 bg-black/40">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-neon-green/20 flex items-center justify-center border border-neon-green/30">
-                                <span class="font-bold text-neon-green">2</span>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white mb-2">Analysis Engine</h3>
-                                <p class="text-sm text-gray-400">Our proprietary engine parses raw account data to verify Token-2022 extensions, Metaplex metadata mutability, and SPL token authority states.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-6 p-6 rounded-xl border border-white/10 bg-black/40">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                                <span class="font-bold text-white">3</span>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white mb-2">Presentation Layer</h3>
-                                <p class="text-sm text-gray-400">Data is normalized and served via our Edge CDN, ensuring users worldwide receive the same millisecond-accurate data.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Risk Engine -->
-                <section id="risk-engine" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="shield-alert" class="text-red-400"></i> Risk Analysis Engine
-                    </h2>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        SolScanner assigns a confidence score (0-100) to every token contract. This score is calculated deterministically based on three critical vectors.
-                    </p>
-
-                    <div class="overflow-hidden rounded-xl border border-white/10">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-white/5 text-gray-300 font-display uppercase tracking-wider">
-                                <tr>
-                                    <th class="px-6 py-4">Vector</th>
-                                    <th class="px-6 py-4">Impact</th>
-                                    <th class="px-6 py-4">Description</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-white/5 bg-black/20">
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-white">Mint Authority</td>
-                                    <td class="px-6 py-4 text-red-400 font-mono">-50 Points</td>
-                                    <td class="px-6 py-4 text-gray-400">If enabled, the developer can mint infinite tokens, crashing the price (Rug Pull).</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-white">Freeze Authority</td>
-                                    <td class="px-6 py-4 text-red-400 font-mono">-25 Points</td>
-                                    <td class="px-6 py-4 text-gray-400">If enabled, the developer can freeze specific wallets, preventing them from selling.</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-white">Mutable Metadata</td>
-                                    <td class="px-6 py-4 text-yellow-400 font-mono">-10 Points</td>
-                                    <td class="px-6 py-4 text-gray-400">If enabled, the token name, ticker, and image can be changed after launch.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-4 p-4 rounded-lg bg-neon-green/5 border border-neon-green/20 text-neon-green text-sm">
-                        <strong>Safe Threshold:</strong> A token must score >80 points to be considered "Safe" by the SolScanner protocol.
-                    </div>
-                </section>
-
-                <!-- Tokenomics -->
-                <section id="token-utility" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="coins" class="text-yellow-400"></i> $SCAN Token Economy
-                    </h2>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        The $SCAN token is the native utility asset powering the ecosystem. It is designed with a deflationary pressure mechanism tied to platform usage.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-6 rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-                            <h3 class="text-lg font-bold text-white mb-3">Tier 1 Access</h3>
-                            <p class="text-gray-400 text-sm">Holders of 10,000+ $SCAN gain access to uncapped API requests and the "Sniper" module within the terminal.</p>
-                        </div>
-                        <div class="p-6 rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-                            <h3 class="text-lg font-bold text-white mb-3">Revenue Share (Buyback)</h3>
-                            <p class="text-gray-400 text-sm">30% of revenue generated from Enterprise API subscriptions is used to buy back and burn $SCAN from the open market.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Governance (New Section) -->
-                <section id="governance" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="vote" class="text-neon-purple"></i> Governance DAO
-                    </h2>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        The SolScanner Protocol operates as a community-driven DAO. Token holders have direct influence over the risk parameters used in our scanning engine.
-                    </p>
+                    <p class="text-gray-400 mb-6">The audit endpoint returns a recursive analysis of the token's metadata and authority tree.</p>
                     
-                    <div class="space-y-4">
-                        <div class="p-6 rounded-xl border border-white/10 bg-black/40">
-                            <div class="flex items-start gap-4">
-                                <div class="p-2 rounded-lg bg-neon-purple/10 text-neon-purple">
-                                    <i data-lucide="file-check" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-bold text-white mb-1">Proposal Submission</h3>
-                                    <p class="text-sm text-gray-400">Wallets holding >50,000 $SCAN can submit improvement proposals (SIPs) to adjust risk weightings or add new data sources.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6 rounded-xl border border-white/10 bg-black/40">
-                            <div class="flex items-start gap-4">
-                                <div class="p-2 rounded-lg bg-neon-green/10 text-neon-green">
-                                    <i data-lucide="users" class="w-6 h-6"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-bold text-white mb-1">Quadratic Voting</h3>
-                                    <p class="text-sm text-gray-400">We utilize a quadratic voting mechanism to prevent whale dominance, ensuring that the community consensus reflects the broader user base.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- API Reference -->
-                <section id="api-reference" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="code" class="text-neon-purple"></i> API Reference
-                    </h2>
-                    <p class="text-gray-400 mb-6">
-                        Our API allows developers to integrate SolScanner's risk engine directly into their own dApps or trading bots.
-                    </p>
-
-                    <div class="mb-8">
-                        <h3 class="text-sm font-bold text-gray-300 uppercase mb-3">Endpoint: Get Token Audit</h3>
-                        <div class="code-block rounded-lg p-4 mb-4 font-mono text-sm overflow-x-auto">
-                            <span class="text-neon-purple">GET</span> https://api.solscanner.com/v1/audit/{mint_address}
-                        </div>
-                    </div>
-
-                    <div class="mb-8">
-                        <h3 class="text-sm font-bold text-gray-300 uppercase mb-3">Response Object</h3>
-                        <div class="code-block rounded-lg p-6 font-mono text-sm overflow-x-auto text-gray-300">
-<pre>{
-  <span class="text-neon-green">"status"</span>: "success",
-  <span class="text-neon-green">"data"</span>: {
-    <span class="text-neon-green">"mint"</span>: "JUPyiwrYJFskUPiHa7hkeR8VUtk641KP9MhvRFPu2ct",
-    <span class="text-neon-green">"risk_score"</span>: 98,
-    <span class="text-neon-green">"authorities"</span>: {
-      <span class="text-neon-green">"mint_authority"</span>: null, <span class="text-gray-500">// Revoked (Safe)</span>
-      <span class="text-neon-green">"freeze_authority"</span>: null <span class="text-gray-500">// Revoked (Safe)</span>
-    },
-    <span class="text-neon-green">"metadata"</span>: {
-      <span class="text-neon-green">"is_mutable"</span>: true,
-      <span class="text-neon-green">"name"</span>: "Jupiter"
-    }
+                    <div class="bg-[#0A0A12] border border-white/10 rounded-lg p-6 relative">
+                        <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-600">JSON</div>
+                        <pre class="font-mono text-sm text-neon-cyan overflow-x-auto">
+{
+  "mint": "So111...",
+  "risk_score": 95,
+  "authorities": {
+    "mint": <span class="text-neon-red">null</span>, <span class="text-gray-500">// Safe</span>
+    "freeze": <span class="text-neon-red">null</span>, <span class="text-gray-500">// Safe</span>
+    "metadata": "revoked"
+  },
+  "liquidity": {
+    "locked": true,
+    "dex": "Raydium",
+    "amount_usd": 450291.22
   }
 }</pre>
-                        </div>
                     </div>
                 </section>
-
-                <!-- Rate Limits (New Section) -->
-                <section id="rate-limits" class="section-track mb-32 scroll-mt-32">
-                    <h2 class="text-3xl font-bold font-display text-white mb-6 flex items-center gap-3">
-                        <i data-lucide="gauge" class="text-red-400"></i> Enterprise Limits
-                    </h2>
-                    <p class="text-gray-400 leading-7 mb-6">
-                        To maintain high velocity for all users, API access is tiered based on token holdings.
-                    </p>
-                    
-                    <div class="overflow-hidden rounded-xl border border-white/10">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-white/5 text-gray-300 font-display uppercase tracking-wider">
-                                <tr>
-                                    <th class="px-6 py-4">Tier</th>
-                                    <th class="px-6 py-4">Req / Sec</th>
-                                    <th class="px-6 py-4">Requirement</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-white/5 bg-black/20">
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-white">Public</td>
-                                    <td class="px-6 py-4 text-gray-400 font-mono">5 RPS</td>
-                                    <td class="px-6 py-4 text-gray-400">None</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-neon-green">Pro</td>
-                                    <td class="px-6 py-4 text-neon-green font-mono">50 RPS</td>
-                                    <td class="px-6 py-4 text-gray-400">Hold 5,000 $SCAN</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 font-bold text-neon-purple">Enterprise</td>
-                                    <td class="px-6 py-4 text-neon-purple font-mono">Uncapped</td>
-                                    <td class="px-6 py-4 text-gray-400">Hold 50,000 $SCAN + KYB</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <footer class="border-t border-white/10 pt-12 pb-8">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <p class="text-gray-500 text-sm">© 2024 SolScanner Protocol. All rights reserved.</p>
-                        <div class="flex gap-6">
-                            <a href="#" class="text-gray-500 hover:text-white transition-colors">Privacy</a>
-                            <a href="#" class="text-gray-500 hover:text-white transition-colors">Terms</a>
-                            <a href="#" class="text-gray-500 hover:text-white transition-colors">Contact</a>
-                        </div>
-                    </div>
-                </footer>
-
             </div>
         </main>
     </div>
 
-    <!-- Main Logic for Icons & Scroll Spy & Click -->
-    <script>
-        // Init Icons
-        lucide.createIcons();
-
-        // Preloader Logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            const bar = document.getElementById('loader-progress');
-            const text = document.getElementById('loader-text');
-            
-            // Text Sequence
-            setTimeout(() => { text.textContent = "ACCESSING ARCHIVES..." }, 500);
-            setTimeout(() => { text.textContent = "RENDERING LATEX..." }, 1200);
-            setTimeout(() => { text.textContent = "WHITEPAPER READY" }, 1800);
-
-            // Animate Bar
-            setTimeout(() => {
-                bar.style.width = '100%';
-            }, 100);
-
-            // Remove Preloader
-            setTimeout(() => {
-                preloader.classList.add('opacity-0');
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 1000);
-            }, 2000);
-        });
-
-        // 1. Click Handling for Smooth Scroll
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
-                const mainContainer = document.getElementById('main-content');
-
-                if (targetSection && mainContainer) {
-                    // Update active state immediately for responsiveness
-                    document.querySelectorAll('.nav-link').forEach(l => {
-                        l.classList.remove('active');
-                        l.classList.add('text-gray-400');
-                        l.classList.remove('text-white');
-                    });
-                    this.classList.add('active');
-                    this.classList.remove('text-gray-400');
-
-                    // Calculate position relative to container
-                    // We need to scroll the container, not the window
-                    const containerTop = mainContainer.getBoundingClientRect().top;
-                    const sectionTop = targetSection.getBoundingClientRect().top;
-                    const offset = sectionTop - containerTop + mainContainer.scrollTop - 40; // 40px buffer
-
-                    mainContainer.scrollTo({
-                        top: offset,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // 2. Scroll Spy Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const mainContainer = document.getElementById('main-content');
-            const sections = document.querySelectorAll('.section-track');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            // We use the container as root
-            const observerOptions = {
-                root: mainContainer,
-                rootMargin: '-10% 0px -70% 0px', // Active when section enters top 10% to 30% of view
-                threshold: 0
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Remove active class from all
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            link.classList.add('text-gray-400');
-                            link.classList.remove('text-white');
-                        });
-
-                        // Add active class to current
-                        const activeId = entry.target.getAttribute('id');
-                        const activeLink = document.querySelector(`.nav-link[href="#${activeId}"]`);
-                        
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                            activeLink.classList.remove('text-gray-400');
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-        });
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

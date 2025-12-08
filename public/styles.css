@@ -215,3 +215,17 @@ a, button, input, .cursor-pointer, select, label {
     0% { background-color: rgba(0, 240, 255, 0.3); }
     100% { background-color: transparent; }
 }
+
+/* --- ADD THIS TO YOUR <style> BLOCK --- */
+
+/* Shutdown Animation */
+@keyframes power-off { 
+    0% { transform: scale(1); filter: brightness(1) blur(0); opacity: 1; }
+    40% { transform: scale(1.02, 0.002); filter: brightness(5); opacity: 1; }
+    50% { transform: scale(0, 0); opacity: 0; }
+    100% { transform: scale(0, 0); opacity: 0; }
+}
+.powering-down { 
+    animation: power-off 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; 
+    pointer-events: none; 
+}

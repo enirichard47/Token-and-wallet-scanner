@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Neural Feed Archive</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF', purple: '#BD00FF', green: '#00FF94', red: '#FF2A6D', yellow: '#FFD600' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-white font-sans min-h-screen flex flex-col">
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="rss" class="text-neon-cyan w-6 h-6"></i>
+                <span class="font-bold tracking-[0.2em] text-lg">NEURAL_<span class="text-neon-cyan">FEED</span></span>
+            </a>
+            
+            <div class="hidden md:flex gap-6 font-mono text-xs tracking-widest text-gray-400">
+                <a href="#" class="text-neon-cyan border-b border-neon-cyan pb-1">ALL_TRANSMISSIONS</a>
+                <a href="#" class="hover:text-white transition-colors">MARKET_INTEL</a>
+                <a href="#" class="hover:text-white transition-colors">SECURITY_ALERTS</a>
+                <a href="#" class="hover:text-white transition-colors">DEV_LOGS</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="SEARCH_DATABASE..." class="bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-mono w-48 focus:outline-none focus:border-neon-cyan text-white">
+                    <i data-lucide="search" class="w-3 h-3 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
+
+        <section class="mb-20 relative">
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-purple to-neon-cyan opacity-20 blur-xl rounded-2xl"></div>
+            <div class="relative bg-[#0A0A12] border border-white/10 rounded-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+                <div class="h-64 lg:h-auto relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-neon-cyan/10 group-hover:bg-transparent transition-colors z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute top-4 left-4 z-20 px-3 py-1 bg-neon-cyan text-black text-[10px] font-bold font-mono rounded tracking-widest">FEATURED_STORY</div>
+                </div>
+                <div class="p-8 lg:p-12 flex flex-col justify-center">
+                    <div class="flex items-center gap-3 text-xs font-mono text-neon-cyan mb-4">
+                        <span>LATEST_DROP</span>
+                        <div class="h-px w-8 bg-neon-cyan/50"></div>
+                        <span>OCT 25, 2023</span>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold font-display mb-6 leading-tight hover:text-neon-cyan transition-colors cursor-pointer">The Great Migration: Why Institutional Capital is Moving to SVM</h1>
+                    <p class="text-gray-400 leading-relaxed mb-8">An exhaustive analysis of the parallel execution environment and how local fee markets are solving the noisy neighbor problem for high-frequency trading firms.</p>
+                    <button class="w-max px-6 py-3 border border-white/20 hover:bg-white hover:text-black transition-all font-mono text-xs tracking-widest flex items-center gap-2 group">
+                        READ_FULL_REPORT <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex items-end justify-between mb-8 border-b border-white/10 pb-4">
+            <h2 class="text-2xl font-bold font-display">ARCHIVE_DB</h2>
+            <div class="text-[10px] font-mono text-gray-500">SORT: CHRONOLOGICAL // DESC</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-neon-cyan/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">MARKET_INTEL</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">OCT 24, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-neon-cyan transition-colors">Solana DeFi TVL Trends</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">In-depth look at liquidity inflows into Kamino and Marginfi protocols.</p>
+                    <a href="#" class="text-[10px] font-mono text-neon-cyan hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-neon-green/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">SECURITY</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">OCT 20, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-neon-green transition-colors">Honeypot Detection 101</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Technical breakdown of Freeze Authority and mutable metadata flags.</p>
+                    <a href="#" class="text-[10px] font-mono text-neon-green hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-neon-purple/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">TUTORIAL</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">OCT 15, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-neon-purple transition-colors">Building a Sniper Bot</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Step-by-step guide to setting up a Node.js listener for Geyser events.</p>
+                    <a href="#" class="text-[10px] font-mono text-neon-purple hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-white/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1639322537228-ad7117a7a640?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">INFRASTRUCTURE</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">SEP 28, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-white transition-colors">Understanding Geyser Plugins</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Why standard RPC polling is dead and streaming is the future.</p>
+                    <a href="#" class="text-[10px] font-mono text-white hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-neon-yellow/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">NFT_MARKET</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">SEP 12, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-neon-yellow transition-colors">The State of Compressed NFTs</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">How Merkle trees are allowing 1 million mints for $100.</p>
+                    <a href="#" class="text-[10px] font-mono text-neon-yellow hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+            <article class="group relative bg-[#050508] border border-white/10 rounded-xl overflow-hidden hover:border-neon-red/50 transition-colors duration-300">
+                <div class="h-48 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1516110833967-0b5716ca1387?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 z-20 px-2 py-1 bg-black/80 border border-white/10 text-[10px] font-mono text-gray-300 rounded">POST_MORTEM</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-gray-500 text-[10px] font-mono mb-2">AUG 30, 2023</div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-display group-hover:text-neon-red transition-colors">Incident Report: Bridge Exploit</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Detailed breakdown of the re-entrancy attack on the legacy bridge contract.</p>
+                    <a href="#" class="text-[10px] font-mono text-neon-red hover:underline">ACCESS_FILE >></a>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="flex justify-center border-t border-white/10 pt-12">
+            <div class="flex items-center gap-2">
+                <button class="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 text-gray-500 hover:text-white hover:bg-white/10 rounded"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <button class="w-10 h-10 flex items-center justify-center border border-neon-cyan/50 bg-neon-cyan/10 text-neon-cyan font-mono text-xs rounded">01</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-transparent text-gray-500 hover:text-white font-mono text-xs rounded">02</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-transparent text-gray-500 hover:text-white font-mono text-xs rounded">03</button>
+                <span class="text-gray-600">...</span>
+                <button class="w-10 h-10 flex items-center justify-center border border-transparent text-gray-500 hover:text-white font-mono text-xs rounded">42</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 text-gray-500 hover:text-white hover:bg-white/10 rounded"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-white/5 bg-black/50 py-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="radar" class="text-neon-cyan w-4 h-4"></i>
+                <span class="text-xs font-mono text-gray-500">NEURAL FEED // V1.0</span>
+            </div>
+            <a href="index.html" class="text-xs font-mono text-gray-500 hover:text-neon-cyan">RETURN_TO_BASE</a>
+        </div>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

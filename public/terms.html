@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Terms of Service</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { green: '#00FF94' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-gray-300 font-mono min-h-screen flex flex-col">
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="file-text" class="text-neon-green w-6 h-6"></i>
+                <span class="font-bold tracking-[0.2em] text-lg text-white">TERMS_<span class="text-neon-green">Of_SERVICE</span></span>
+            </a>
+            <span class="text-xs text-gray-500">LAST_UPDATED: 2024-03-15</span>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full">
+        
+        <div class="border border-white/10 bg-[#0A0A12] p-8 md:p-12 rounded-lg shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-50"></div>
+
+            <h1 class="text-3xl font-bold text-white mb-8 font-display">User Agreement Protocol</h1>
+            
+            <div class="space-y-8 text-sm leading-relaxed">
+                <div class="p-4 border border-white/10 bg-white/5 rounded text-xs text-neon-green">
+                    WARNING: INTERACTING WITH BLOCKCHAIN PROTOCOLS INVOLVES SIGNIFICANT RISK. BY ACCESSING SOLSCANNER, YOU ACKNOWLEDGE THESE RISKS.
+                </div>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">1. ACCEPTANCE OF TERMS</h2>
+                    <p>By accessing or using the SolScanner Interface (the "Interface") and the underlying protocol, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not access the Interface.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">2. NO FINANCIAL ADVICE</h2>
+                    <p>SolScanner is a data analytics tool. We provide visualization of on-chain data. <span class="text-white">We do not provide financial, investment, legal, or tax advice.</span> Nothing contained in the Interface constitutes a solicitation, recommendation, endorsement, or offer to buy or sell any token or other financial instrument.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">3. DATA ACCURACY</h2>
+                    <p>While we strive for sub-50ms latency via our Sentinel Nodes, blockchain data is subject to network congestion, reorganization ("reorgs"), and RPC failures. SolScanner makes no guarantees regarding the uptime, accuracy, or completeness of the data displayed.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">4. PROHIBITED ACTIVITY</h2>
+                    <p>You agree not to use the Interface to:</p>
+                    <ul class="list-disc pl-6 space-y-1 text-gray-400 mt-2">
+                        <li>Violate any applicable laws, including anti-money laundering and anti-terrorist financing laws.</li>
+                        <li>Engage in wash trading or other market manipulation tactics.</li>
+                        <li>Overburden our API infrastructure with excessive requests (DDoS).</li>
+                        <li>Reverse engineer our proprietary risk scoring algorithms.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-white mb-2">5. LIMITATION OF LIABILITY</h2>
+                    <p class="uppercase">TO THE MAXIMUM EXTENT PERMITTED BY LAW, SOLSCANNER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES.</p>
+                </section>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
+                <a href="index.html" class="text-neon-green hover:underline">&lt; RETURN_TO_TERMINAL</a>
+                <button onclick="window.print()" class="text-gray-500 hover:text-white flex items-center gap-2"><i data-lucide="printer" class="w-4 h-4"></i> PRINT_COPY</button>
+            </div>
+        </div>
+    </main>
+    
+    <script>lucide.createIcons();</script>
+</body>
+</html>

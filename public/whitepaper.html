@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Whitepaper v1.0</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', paper: '#E0E0E0' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-paper font-serif min-h-screen">
+
+    <nav class="border-b border-white/10 bg-void sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+             <a href="index.html" class="flex items-center gap-2 font-mono text-sm text-gray-400 hover:text-white">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Return
+            </a>
+            <span class="font-mono text-xs text-gray-500 uppercase">SolScanner Protocol // Technical Manifesto // v1.0</span>
+            <button class="text-gray-400 hover:text-white"><i data-lucide="download" class="w-4 h-4"></i></button>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-20">
+        
+        <header class="mb-20 text-center border-b border-white/10 pb-12">
+            <h1 class="text-5xl font-bold font-display mb-6 tracking-tight text-white">The SolScanner Protocol</h1>
+            <p class="text-xl text-gray-400 italic font-serif">A decentralized framework for real-time ledger forensics and heuristic risk analysis on the Solana Network.</p>
+            <div class="mt-8 flex justify-center gap-8 font-mono text-xs text-gray-500">
+                <span>AUTHORS: 0xArch, Vex</span>
+                <span>DATE: August 2024</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:uppercase prose-headings:tracking-widest prose-p:font-serif prose-p:text-gray-300 prose-code:text-neon-cyan prose-code:bg-white/5 prose-code:px-1 prose-code:rounded">
+            
+            <h3>1. Abstract</h3>
+            <p>
+                The proliferation of high-throughput blockchains has created a data asymmetry between malicious actors and retail participants. SolScanner addresses this by introducing <strong>Sentinel Nodes</strong>, a layer of validator-adjacent observers that index state changes in milliseconds. This paper outlines the architecture of our Recursive Metadata Analysis (RMA) engine.
+            </p>
+
+            <h3>2. The Latency Problem</h3>
+            <p>
+                Standard RPC nodes prioritize transaction broadcasting over query speed. By the time a standard <code>getAccountInfo</code> call returns data about a liquidity removal event, the block has already been finalized. SolScanner utilizes the Geyser plugin interface to stream account updates directly from the validator runtime to our analysis engine via gRPC.
+            </p>
+
+            <div class="my-12 p-6 border border-white/10 bg-[#0A0A12] font-mono text-sm not-prose">
+                <div class="text-gray-500 mb-2">// Latency Comparison Formula</div>
+                <div class="text-green-400">T_detect = T_block + T_indexing + T_query</div>
+                <div class="text-gray-400 mt-2">
+                    Standard RPC: 400ms + 2000ms + 150ms = <strong>~2.5s</strong><br>
+                    SolScanner: 400ms + 10ms + 20ms = <strong>~430ms</strong>
+                </div>
+            </div>
+
+            <h3>3. Risk Heuristics</h3>
+            <p>
+                We assign a deterministic risk score $R$ based on a weighted vector of mutable properties. The core equation is defined as:
+            </p>
+            
+            <p class="font-mono text-center my-8 text-xl bg-white/5 py-4 border border-white/10">
+                R = 100 - (w_m * M + w_f * F + w_l * L)
+            </p>
+
+            <p>
+                Where $M$ is Mint Authority presence, $F$ is Freeze Authority, and $L$ is Liquidity Lock status. The weights $w$ are adjusted dynamically via DAO governance based on evolving scam patterns.
+            </p>
+
+            <h3>4. Tokenomics ($SCAN)</h3>
+            <p>
+                The $SCAN token serves as a work-utility token. Enterprise clients must stake $SCAN to access higher API rate limits. Furthermore, 30% of protocol revenue is used to buy back and burn $SCAN, creating a deflationary pressure correlated with network usage.
+            </p>
+
+            <h3>5. Conclusion</h3>
+            <p>
+                By commoditizing forensic data, SolScanner aims to restore transparency to the Solana ecosystem, making it safer for institutional capital deployment.
+            </p>
+
+        </article>
+
+        <footer class="mt-20 pt-12 border-t border-white/10 text-center text-gray-500 font-mono text-xs">
+            &copy; 2024 SolScanner Research Division. <br>
+            SHA-256: 8a9d8f92b...
+        </footer>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

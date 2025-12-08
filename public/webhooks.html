@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Webhooks</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF', purple: '#BD00FF', yellow: '#FFD600' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-white font-sans min-h-screen">
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="radio" class="text-neon-yellow w-6 h-6 animate-pulse"></i>
+                <span class="font-bold tracking-[0.2em] text-lg">EVENT_<span class="text-neon-yellow">LISTENER</span></span>
+            </a>
+            <div class="flex items-center gap-2 px-3 py-1 bg-neon-green/10 border border-neon-green/30 rounded text-xs font-mono text-neon-green">
+                <div class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></div> SYSTEMS_ONLINE
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-6 py-12">
+        
+        <div class="p-8 border border-white/10 bg-gradient-to-r from-white/5 to-transparent rounded-xl mb-12 flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold font-display mb-2">Create New Hook</h2>
+                <p class="text-gray-400 text-sm">Listen for real-time changes on specific token addresses.</p>
+            </div>
+            <button class="bg-white text-black px-6 py-3 font-bold font-mono text-xs tracking-widest hover:bg-neon-cyan transition-colors">
+                CONFIGURE_ENDPOINT
+            </button>
+        </div>
+
+        <h3 class="font-mono text-xs text-gray-500 mb-4 tracking-widest">ACTIVE_SUBSCRIPTIONS</h3>
+        
+        <div class="space-y-4">
+            <div class="p-6 border border-white/10 bg-[#0A0A12] rounded-lg hover:border-neon-cyan/50 transition-colors group">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-neon-purple/10 rounded border border-neon-purple/30">
+                            <i data-lucide="zap" class="text-neon-purple w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white group-hover:text-neon-cyan transition-colors">Large Transfer Alert</h4>
+                            <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500">
+                                <span>ID: wh_882j9a...</span>
+                                <span>&bull;</span>
+                                <span class="text-white">https://api.my-app.com/events</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-mono rounded border border-green-500/20">ACTIVE</span>
+                        <button class="p-2 hover:bg-white/10 rounded"><i data-lucide="more-horizontal" class="text-gray-500 w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border border-white/10 bg-[#0A0A12] rounded-lg hover:border-neon-yellow/50 transition-colors group">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-neon-yellow/10 rounded border border-neon-yellow/30">
+                            <i data-lucide="shield-alert" class="text-neon-yellow w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white group-hover:text-neon-yellow transition-colors">Authority Revoke Watch</h4>
+                            <div class="flex items-center gap-3 mt-1 text-xs font-mono text-gray-500">
+                                <span>ID: wh_11mx92...</span>
+                                <span>&bull;</span>
+                                <span class="text-white">https://api.my-app.com/security</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flex items-center gap-2">
+                        <span class="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-mono rounded border border-green-500/20">ACTIVE</span>
+                        <button class="p-2 hover:bg-white/10 rounded"><i data-lucide="more-horizontal" class="text-gray-500 w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12">
+            <h3 class="font-mono text-xs text-gray-500 mb-4 tracking-widest">RECENT_DELIVERIES</h3>
+            <div class="overflow-x-auto border border-white/10 rounded-lg">
+                <table class="w-full text-left font-mono text-xs">
+                    <thead class="bg-white/5 border-b border-white/10 text-gray-400">
+                        <tr>
+                            <th class="px-4 py-3">STATUS</th>
+                            <th class="px-4 py-3">EVENT</th>
+                            <th class="px-4 py-3">TIME</th>
+                            <th class="px-4 py-3">LATENCY</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-gray-300">
+                        <tr>
+                            <td class="px-4 py-3 text-neon-green">200 OK</td>
+                            <td class="px-4 py-3">token.frozen</td>
+                            <td class="px-4 py-3">14:02:22</td>
+                            <td class="px-4 py-3">42ms</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-neon-red">500 ERR</td>
+                            <td class="px-4 py-3">tx.large</td>
+                            <td class="px-4 py-3">13:58:10</td>
+                            <td class="px-4 py-3">110ms</td>
+                        </tr>
+                         <tr>
+                            <td class="px-4 py-3 text-neon-green">200 OK</td>
+                            <td class="px-4 py-3">token.minted</td>
+                            <td class="px-4 py-3">13:55:01</td>
+                            <td class="px-4 py-3">38ms</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

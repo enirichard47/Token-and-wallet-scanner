@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolScanner | Node.js SDK</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Rajdhani', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], display: ['Space Grotesk', 'sans-serif'] },
+                    colors: { void: '#020205', neon: { cyan: '#00F0FF', purple: '#BD00FF', green: '#00FF94' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-white font-sans min-h-screen">
+
+    <nav class="border-b border-white/5 bg-void/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <i data-lucide="package" class="text-neon-purple w-6 h-6"></i>
+                <span class="font-bold tracking-[0.2em] text-lg">SDK_<span class="text-neon-purple">REGISTRY</span></span>
+            </a>
+            <a href="https://github.com" target="_blank" class="flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="github" class="w-4 h-4"></i> VIEW_SOURCE
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto px-6 py-20">
+        
+        <div class="flex items-center gap-6 mb-12">
+            <div class="w-24 h-24 bg-neon-purple/10 border border-neon-purple/50 rounded-xl flex items-center justify-center">
+                <span class="text-4xl font-bold font-display text-neon-purple">JS</span>
+            </div>
+            <div>
+                <h1 class="text-4xl font-bold font-display mb-2">@solscanner/sdk</h1>
+                <p class="text-gray-400 font-mono text-sm">Official Node.js wrapper for the SolScanner Enterprise API.</p>
+                <div class="flex gap-4 mt-4">
+                    <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-neon-green">v2.4.1 STABLE</span>
+                    <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-gray-400">MIT LICENSE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="col-span-2 space-y-8">
+                
+                <div class="bg-[#0A0A12] border border-white/10 rounded-xl overflow-hidden">
+                    <div class="bg-white/5 px-4 py-2 border-b border-white/10 flex items-center justify-between">
+                        <span class="text-xs font-mono text-gray-400">INSTALLATION</span>
+                        <div class="flex gap-1"><div class="w-2 h-2 rounded-full bg-red-500"></div><div class="w-2 h-2 rounded-full bg-yellow-500"></div></div>
+                    </div>
+                    <div class="p-6">
+                        <code class="font-mono text-sm text-neon-cyan">$ npm install @solscanner/sdk --save</code>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold font-display text-white">Quick Start</h2>
+                    <div class="bg-[#0A0A12] border border-white/10 rounded-xl p-6 font-mono text-sm text-gray-300 leading-relaxed overflow-x-auto">
+<pre><span class="text-neon-purple">import</span> { SolScanner } <span class="text-neon-purple">from</span> '@solscanner/sdk';
+
+<span class="text-gray-500">// Initialize with your API Key</span>
+<span class="text-neon-purple">const</span> scanner = <span class="text-neon-purple">new</span> SolScanner('sk_live_...');
+
+<span class="text-neon-purple">async function</span> analyzeToken() {
+  <span class="text-neon-purple">try</span> {
+    <span class="text-neon-purple">const</span> report = <span class="text-neon-purple">await</span> scanner.audit.token('So111...');
+    
+    <span class="text-neon-purple">if</span> (report.riskScore < 50) {
+      console.log(<span class="text-neon-green">'Token is SAFE'</span>);
+    } <span class="text-neon-purple">else</span> {
+      console.warn(<span class="text-neon-red">'High Risk Detected:'</span>, report.vectors);
+    }
+  } <span class="text-neon-purple">catch</span> (err) {
+    console.error(err);
+  }
+}
+
+analyzeToken();</pre>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-6 border border-white/10 bg-white/5 rounded-xl">
+                    <h3 class="font-mono text-xs text-white mb-4 uppercase tracking-widest">Dependencies</h3>
+                    <ul class="space-y-2 text-sm text-gray-400 font-mono">
+                        <li class="flex justify-between"><span>@solana/web3.js</span> <span class="text-neon-cyan">^1.78.0</span></li>
+                        <li class="flex justify-between"><span>axios</span> <span class="text-neon-cyan">^1.4.0</span></li>
+                        <li class="flex justify-between"><span>bs58</span> <span class="text-neon-cyan">^5.0.0</span></li>
+                    </ul>
+                </div>
+                
+                <div class="p-6 border border-white/10 bg-gradient-to-br from-neon-purple/10 to-transparent rounded-xl">
+                    <h3 class="font-bold text-white mb-2">Need Python?</h3>
+                    <p class="text-sm text-gray-400 mb-4">We have a beta Python wrapper available for data scientists.</p>
+                    <button class="w-full py-2 border border-neon-purple/50 text-neon-purple text-xs font-mono hover:bg-neon-purple hover:text-black transition-colors">PIP INSTALL SOLSCANNER</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
