@@ -308,13 +308,13 @@
                     </div>
 
                     <div class="p-8 md:p-12">
-                        <div class="relative group">
+                        <div class="relative group mb-8">
                             <div class="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple opacity-20 group-hover:opacity-60 transition duration-500 blur"></div>
                             <div class="relative flex bg-void">
                                 <div class="w-12 flex items-center justify-center border-l border-t border-b border-white/10">
                                     <span class="font-mono text-neon-cyan">></span>
                                 </div>
-                                <input type="text" id="searchInput" class="block w-full py-5 bg-transparent border-y border-r border-white/10 text-white font-mono placeholder-gray-700 focus:outline-none focus:border-neon-cyan/50 focus:text-neon-cyan transition-colors" placeholder="ENTER_MINT_ADDRESS_OR_WALLET..." value="">
+                                <input type="text" id="searchInput" class="block w-full py-5 bg-transparent border-y border-r border-white/10 text-white font-mono placeholder-gray-700 focus:outline-none focus:border-neon-cyan/50 focus:text-neon-cyan transition-colors" placeholder="ENTER_MINT_ADDRESS..." value="">
                                 <button onclick="runAnalysis()" class="absolute right-2 top-2 bottom-2 px-8 bg-white/5 border border-white/10 hover:bg-neon-cyan hover:text-black hover:border-neon-cyan transition-all font-mono text-xs tracking-widest">
                                     <span id="btnText">EXECUTE</span>
                                     <div id="btnLoader" class="hidden w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
@@ -322,11 +322,11 @@
                             </div>
                         </div>
 
-                        <div id="errorMessage" class="hidden mt-6 p-4 border-l-2 border-neon-red bg-neon-red/5 font-mono text-xs text-neon-red">
+                        <div id="errorMessage" class="hidden mb-6 p-4 border-l-2 border-neon-red bg-neon-red/5 font-mono text-xs text-neon-red">
                             [ERROR] :: <span id="errorText">CONNECTION_REFUSED</span>
                         </div>
 
-                        <div id="resultsArea" class="hidden mt-12 space-y-12">
+                        <div id="resultsArea" class="space-y-12">
                             
                             <div id="tokenResults" class="space-y-8 animate-fade-in-up">
                                 
@@ -334,16 +334,16 @@
                                     <div>
                                         <div class="text-[10px] font-mono text-gray-500 mb-1">ASSET_IDENTIFIER</div>
                                         <h2 class="text-4xl font-bold text-white flex items-center gap-3 font-display">
-                                            <span id="tokenName">LOADING</span>
-                                            <span class="text-sm px-2 py-1 bg-white/5 rounded text-gray-400 font-mono" id="tokenSymbol">---</span>
+                                            <span id="tokenName" class="text-gray-500">WAITING_FOR_INPUT</span>
+                                            <span class="text-sm px-2 py-1 bg-white/5 rounded text-gray-600 font-mono" id="tokenSymbol">---</span>
                                         </h2>
-                                        <a href="#" target="_blank" id="viewExplorer" class="inline-flex items-center gap-2 mt-2 text-xs font-mono text-neon-cyan hover:text-white transition-colors">
+                                        <a href="#" target="_blank" id="viewExplorer" class="inline-flex items-center gap-2 mt-2 text-xs font-mono text-gray-600 hover:text-white transition-colors pointer-events-none opacity-50">
                                             VIEW_ON_EXPLORER <i data-lucide="external-link" class="w-3 h-3"></i>
                                         </a>
                                     </div>
                                     <div class="text-right">
                                         <div class="text-[10px] font-mono text-gray-500 mb-1">RISK_SCORE</div>
-                                        <div id="res-score" class="text-5xl font-bold font-mono text-white">---</div>
+                                        <div id="res-score" class="text-5xl font-bold font-mono text-gray-700">---</div>
                                     </div>
                                 </div>
 
@@ -369,29 +369,29 @@
 
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     <div class="hud-card-inner p-6 border border-white/5 bg-black/20 flex flex-col justify-between">
-                                        <h3 class="font-mono text-xs text-neon-red tracking-widest mb-6">SECURITY_VECTORS</h3>
+                                        <h3 class="font-mono text-xs text-gray-500 tracking-widest mb-6">SECURITY_VECTORS</h3>
                                         <div class="space-y-6">
                                             <div class="risk-row">
-                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Mint Authority</span><span id="val-mint" class="font-mono font-bold">...</span></div>
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Mint Authority</span><span id="val-mint" class="font-mono font-bold text-gray-600">---</span></div>
                                                 <div class="h-0.5 bg-gray-800 w-full"><div id="bar-mint" class="h-full w-0 bg-neon-red transition-all duration-1000"></div></div>
                                             </div>
                                             <div class="risk-row">
-                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Freeze Authority</span><span id="val-freeze" class="font-mono font-bold">...</span></div>
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Freeze Authority</span><span id="val-freeze" class="font-mono font-bold text-gray-600">---</span></div>
                                                 <div class="h-0.5 bg-gray-800 w-full"><div id="bar-freeze" class="h-full w-0 bg-neon-red transition-all duration-1000"></div></div>
                                             </div>
                                             <div class="risk-row">
-                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Metadata Mutable</span><span id="val-meta" class="font-mono font-bold">...</span></div>
+                                                <div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Metadata Mutable</span><span id="val-meta" class="font-mono font-bold text-gray-600">---</span></div>
                                                 <div class="h-0.5 bg-gray-800 w-full"><div id="bar-meta" class="h-full w-0 bg-neon-yellow transition-all duration-1000"></div></div>
                                             </div>
                                         </div>
                                         <div class="mt-auto pt-6 text-center">
-                                            <span id="res-verdict" class="inline-block px-4 py-2 border border-white/10 text-xs font-mono tracking-widest">AWAITING_DATA</span>
+                                            <span id="res-verdict" class="inline-block px-4 py-2 border border-white/10 text-xs font-mono tracking-widest text-gray-500">SYSTEM_IDLE</span>
                                         </div>
                                     </div>
 
                                     <div class="hud-card-inner border border-white/5 bg-black/20 flex flex-col h-full">
                                         <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center">
-                                            <h3 class="font-mono text-xs text-neon-green tracking-widest">TOP_20_HOLDERS</h3>
+                                            <h3 class="font-mono text-xs text-gray-500 tracking-widest">TOP_HOLDERS</h3>
                                             <div class="text-[10px] text-gray-500">SORT: DESCENDING</div>
                                         </div>
                                         <div class="overflow-x-auto flex-grow custom-scrollbar" style="max-height: 300px;">
@@ -405,39 +405,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="token-holders-list" class="divide-y divide-white/5 font-mono text-xs text-gray-300">
-                                                    </tbody>
+                                                    <tr><td colspan="4" class="py-12 text-center text-gray-600">WAITING FOR SCAN...</td></tr>
+                                                </tbody>
                                             </table>
                                         </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="w-full glass-card p-6 rounded-xl border-t border-neon-green/30">
-                                     <div class="flex items-center justify-between mb-4">
-                                        <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="pie-chart" class="text-neon-green"></i> Supply Concentration</h3>
-                                    </div>
-                                    <div class="h-64 relative flex items-center justify-center">
-                                        <canvas id="distributionChart"></canvas>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="walletResults" class="hidden space-y-8 animate-fade-in-up">
-                                <div class="p-8 border border-neon-green/20 bg-neon-green/5 rounded-xl relative overflow-hidden">
-                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-neon-green/20 rounded-full blur-[60px]"></div>
+                                <div class="p-8 border border-white/10 bg-white/5 rounded-xl relative overflow-hidden">
                                     <div class="relative z-10">
-                                        <div class="text-xs font-mono text-neon-green mb-2 tracking-widest">NATIVE_SOL_BALANCE</div>
+                                        <div class="text-xs font-mono text-gray-500 mb-2 tracking-widest">NATIVE_SOL_BALANCE</div>
                                         <div id="wallet-balance" class="text-6xl font-bold text-white tracking-tighter">---</div>
                                         <div id="wallet-usd" class="text-sm text-gray-400 mt-2 font-mono">---</div>
                                     </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
+                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5">
                                         <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="coins" class="w-3 h-3"></i> SPL Tokens</div>
                                         <div id="wallet-tokens" class="text-2xl font-bold font-display text-white">---</div>
                                     </div>
-                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:bg-white/10 transition-colors">
-                                        <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="image" class="w-3 h-3"></i> NFTs / CNFTs</div>
+                                    <div class="bg-white/5 p-4 rounded-lg border border-white/5">
+                                        <div class="text-gray-400 text-xs uppercase mb-1 flex items-center gap-1"><i data-lucide="image" class="w-3 h-3"></i> NFTs</div>
                                         <div id="wallet-nfts" class="text-2xl font-bold font-display text-white">---</div>
                                     </div>
                                 </div>
@@ -445,20 +436,27 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="hud-card-inner border border-white/5 bg-black/20 h-96 flex flex-col">
                                         <div class="px-6 py-4 border-b border-white/5"><h3 class="font-mono text-xs text-white">ASSET_INVENTORY</h3></div>
-                                        <div class="overflow-y-auto flex-1 custom-scrollbar"><table class="w-full text-left font-mono text-xs"><tbody id="wallet-asset-list" class="divide-y divide-white/5 text-gray-300"></tbody></table></div>
+                                        <div class="overflow-y-auto flex-1 custom-scrollbar">
+                                            <table class="w-full text-left font-mono text-xs">
+                                                <tbody id="wallet-asset-list" class="divide-y divide-white/5 text-gray-300">
+                                                    <tr><td class="py-8 text-center text-gray-600">NO DATA</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <div class="hud-card-inner border border-white/5 bg-black/20 h-96 flex flex-col">
-                                        <div class="px-6 py-4 border-b border-white/5"><h3 class="font-mono text-xs text-white">RECENT_ACTIVITY_LOG</h3></div>
-                                        <div class="overflow-y-auto flex-1 custom-scrollbar"><table class="w-full text-left font-mono text-xs"><tbody id="wallet-tx-list" class="divide-y divide-white/5 text-gray-300"></tbody></table></div>
+                                        <div class="px-6 py-4 border-b border-white/5"><h3 class="font-mono text-xs text-white">ACTIVITY_LOG</h3></div>
+                                        <div class="overflow-y-auto flex-1 custom-scrollbar">
+                                            <table class="w-full text-left font-mono text-xs">
+                                                <tbody id="wallet-tx-list" class="divide-y divide-white/5 text-gray-300">
+                                                    <tr><td class="py-8 text-center text-gray-600">NO DATA</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
-                        
-                        <div id="emptyState" class="text-center py-24 opacity-30">
-                            <i data-lucide="radar" class="w-16 h-16 mx-auto mb-4 text-white animate-[spin_10s_linear_infinite]"></i>
-                            <p class="font-mono text-xs tracking-[0.2em] text-white">AWAITING_TARGET_DESIGNATION...</p>
                         </div>
 
                     </div>
@@ -526,184 +524,300 @@
                     </div>
                 </div>
             </section>
+            <section id="utility" class="py-32 border-t border-white/5 relative overflow-hidden">
+                
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,rgba(20,20,30,0.8),#020205)] z-0"></div>
+                <div class="absolute right-0 top-1/4 w-[800px] h-[800px] bg-neon-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-            <section id="utility" class="py-24 border-t border-white/5">
-                <div class="max-w-7xl mx-auto">
+                <div class="max-w-7xl mx-auto px-6 relative z-10">
+                    
+                    <div class="text-center mb-20">
+                        <h2 class="text-4xl font-bold font-display mb-4">INFRASTRUCTURE</h2>
+                        <p class="text-gray-400 font-mono text-xs tracking-widest">LAYER_0_ACCESS // DIRECT_UPLINK</p>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         
-                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
-                            <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
-                                 <div class="absolute inset-0 bg-neon-purple/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
-                                 <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=600&auto=format&fit=crop" 
-                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
-                                      alt="High Velocity RPC 3D Render">
+                        <div class="group relative bg-[#050508] border border-white/10 rounded-2xl overflow-hidden hover:border-neon-purple/50 transition-colors duration-500">
+                            
+                            <div class="h-64 relative overflow-hidden bg-black flex items-center justify-center">
+                                
+                                <div class="absolute inset-0 opacity-30">
+                                    <div class="absolute inset-0 bg-[linear-gradient(0deg,transparent_0%,rgba(189,0,255,0.5)_50%,transparent_100%)] bg-[length:100%_200%] animate-[data-stream_2s_linear_infinite]"></div>
+                                    <div class="absolute inset-0 bg-[linear-gradient(0deg,transparent_0%,rgba(189,0,255,0.3)_50%,transparent_100%)] bg-[length:50%_150%] left-[20%] animate-[data-stream_3s_linear_infinite]"></div>
+                                    <div class="absolute inset-0 bg-[linear-gradient(0deg,transparent_0%,rgba(189,0,255,0.3)_50%,transparent_100%)] bg-[length:10%_150%] left-[80%] animate-[data-stream_1.5s_linear_infinite]"></div>
+                                </div>
+
+                                <div class="relative z-10 w-20 h-20 rounded-full border border-neon-purple/30 bg-neon-purple/5 backdrop-blur-sm flex items-center justify-center shadow-[0_0_30px_rgba(189,0,255,0.3)] group-hover:scale-110 transition-transform duration-500">
+                                    <div class="w-12 h-12 rounded-full bg-neon-purple/20 flex items-center justify-center animate-pulse">
+                                        <i data-lucide="zap" class="w-6 h-6 text-neon-purple"></i>
+                                    </div>
+                                    <div class="absolute inset-0 border border-dashed border-neon-purple/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                                </div>
                             </div>
-                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-purple">High-Velocity RPC</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Direct connection to premium validator nodes ensures data integrity. No caching, no latency, just raw ledger state.</p>
-                            <div class="mt-6 font-mono text-xs text-neon-purple flex items-center justify-center gap-2">STATUS: ONLINE <span class="w-2 h-2 rounded-full bg-neon-purple animate-pulse"></span></div>
+
+                            <div class="p-8 relative">
+                                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-10 bg-gradient-to-b from-neon-purple to-transparent opacity-50"></div>
+                                <h3 class="text-xl font-bold mb-3 font-display text-center text-white group-hover:text-neon-purple transition-colors">Turbo RPC Nodes</h3>
+                                <p class="text-gray-400 text-sm text-center leading-relaxed">
+                                    Bypass the mempool. Direct gRPC streaming allows you to see blocks 400ms faster than public endpoints.
+                                </p>
+                                <div class="mt-6 flex justify-center">
+                                    <span class="px-3 py-1 bg-neon-purple/10 border border-neon-purple/20 rounded text-[10px] font-mono text-neon-purple">LATENCY: 12ms</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
-                             <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
-                                 <div class="absolute inset-0 bg-neon-green/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
-                                 <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=600&auto=format&fit=crop" 
-                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
-                                      alt="Risk Heuristics 3D Render">
+                        <div class="group relative bg-[#050508] border border-white/10 rounded-2xl overflow-hidden hover:border-neon-green/50 transition-colors duration-500">
+                            
+                            <div class="h-64 relative overflow-hidden bg-black flex items-center justify-center">
+                                
+                                <div class="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,rgba(0,255,148,0.1)_21%,transparent_22%,transparent_40%,rgba(0,255,148,0.1)_41%,transparent_42%,transparent_60%,rgba(0,255,148,0.1)_61%,transparent_62%)]"></div>
+                                
+                                <div class="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,rgba(0,255,148,0.2)_300deg,rgba(0,255,148,0.8)_360deg)] rounded-full animate-[spin_4s_linear_infinite] opacity-30 scale-[1.5]"></div>
+
+                                <div class="absolute top-10 right-20 w-1 h-1 bg-neon-green rounded-full animate-ping"></div>
+                                <div class="absolute bottom-16 left-10 w-1.5 h-1.5 bg-neon-red rounded-full animate-[pulse_0.5s_infinite]"></div>
+
+                                <div class="relative z-10 w-24 h-24 border border-neon-green/50 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm group-hover:border-neon-green transition-colors">
+                                    <div class="absolute inset-2 border border-dashed border-neon-green/30 rounded-full animate-[spin_10s_linear_infinite_reverse]"></div>
+                                    <i data-lucide="scan-eye" class="w-8 h-8 text-neon-green"></i>
+                                </div>
                             </div>
-                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-green">Risk Heuristics</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Proprietary algorithms scan for Mint Authority, Freeze capabilities, and Metadata Mutability to flag potential rugs instantly.</p>
-                            <div class="mt-6 font-mono text-xs text-neon-green text-center">VERSION: 4.2.0</div>
+
+                            <div class="p-8 relative">
+                                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-10 bg-gradient-to-b from-neon-green to-transparent opacity-50"></div>
+                                <h3 class="text-xl font-bold mb-3 font-display text-center text-white group-hover:text-neon-green transition-colors">Forensic Scanner</h3>
+                                <p class="text-gray-400 text-sm text-center leading-relaxed">
+                                    Deterministic risk engine. We decompose bytecode to detect hidden mint functions and freeze authorities.
+                                </p>
+                                <div class="mt-6 flex justify-center">
+                                    <span class="px-3 py-1 bg-neon-green/10 border border-neon-green/20 rounded text-[10px] font-mono text-neon-green">DETECTION: 99.9%</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group relative overflow-hidden perspective-container">
-                             <div class="h-48 flex items-center justify-center mb-6 overflow-hidden rounded-lg relative">
-                                 <div class="absolute inset-0 bg-neon-cyan/20 blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
-                                 <img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=600&auto=format&fit=crop" 
-                                      class="w-full h-full object-cover mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-700" 
-                                      alt="Deep Indexing 3D Render">
+                        <div class="group relative bg-[#050508] border border-white/10 rounded-2xl overflow-hidden hover:border-neon-cyan/50 transition-colors duration-500">
+                            
+                            <div class="h-64 relative overflow-hidden bg-black flex items-center justify-center perspective-container">
+                                
+                                <div class="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30 transform rotate-x-60 scale-150 animate-[grid-scroll_5s_linear_infinite]"></div>
+
+                                <div class="absolute inset-0 grid grid-cols-8 grid-rows-6 gap-1 opacity-50 p-4">
+                                    <div class="bg-neon-cyan/20 rounded-sm animate-pulse"></div>
+                                    <div class="col-start-3 bg-neon-cyan/40 rounded-sm animate-[pulse_2s_infinite]"></div>
+                                    <div class="col-start-7 row-start-2 bg-neon-cyan/30 rounded-sm animate-[pulse_1.5s_infinite]"></div>
+                                    <div class="col-start-2 row-start-4 bg-neon-cyan/50 rounded-sm animate-[pulse_3s_infinite]"></div>
+                                    <div class="col-start-5 row-start-3 bg-neon-cyan/20 rounded-sm animate-[pulse_0.8s_infinite]"></div>
+                                    <div class="col-start-8 row-start-5 bg-neon-cyan/40 rounded-sm animate-[pulse_1.2s_infinite]"></div>
+                                </div>
+
+                                <div class="relative z-10 w-20 h-20 bg-neon-cyan/5 border border-neon-cyan/30 rounded-lg flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(0,240,255,0.2)] group-hover:rotate-12 transition-transform duration-500">
+                                    <i data-lucide="database" class="w-8 h-8 text-neon-cyan"></i>
+                                    <div class="absolute -right-2 -top-2 w-3 h-3 bg-neon-cyan rounded-full animate-ping"></div>
+                                </div>
                             </div>
-                            <h3 class="text-xl font-bold mb-4 font-display text-center text-neon-cyan">Deep Indexing</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed font-sans text-center">Full historical archival data access. Track wallet movements and token transfers from block 0 to present tip.</p>
-                            <div class="mt-6 font-mono text-xs text-neon-cyan flex items-center justify-center gap-2">DB_SIZE: 42PB</div>
+
+                            <div class="p-8 relative">
+                                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-10 bg-gradient-to-b from-neon-cyan to-transparent opacity-50"></div>
+                                <h3 class="text-xl font-bold mb-3 font-display text-center text-white group-hover:text-neon-cyan transition-colors">Archival Indexer</h3>
+                                <p class="text-gray-400 text-sm text-center leading-relaxed">
+                                    Query the entire history of the Solana blockchain. From Genesis block to current slot, indexed and searchable.
+                                </p>
+                                <div class="mt-6 flex justify-center">
+                                    <span class="px-3 py-1 bg-neon-cyan/10 border border-neon-cyan/20 rounded text-[10px] font-mono text-neon-cyan">STORAGE: 4PB+</span>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </section>
-
-             <section id="revenue" class="py-24 border-t border-white/5">
-                 <div class="max-w-5xl mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-4xl font-bold font-display mb-4">VALUE ACCRUAL</h2>
-                        <p class="text-gray-400">How the protocol generates sustainable revenue.</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <div class="p-8 border border-white/10 bg-white/5 rounded-xl">
-                            <h3 class="text-2xl font-bold text-white mb-4">Enterprise Subscriptions</h3>
-                            <p class="text-gray-400 mb-6">Institutional traders and dApps pay monthly fees (in USDC) to access our low-latency API and Geyser plugins.</p>
-                            <div class="h-2 w-full bg-white/10 rounded-full"><div class="h-full w-[80%] bg-neon-purple rounded-full"></div></div>
-                            <p class="text-right text-xs text-neon-purple mt-2">80% Revenue Retention</p>
-                        </div>
-                        <div class="p-8 border border-white/10 bg-white/5 rounded-xl">
-                            <h3 class="text-2xl font-bold text-white mb-4">Buyback & Burn</h3>
-                            <p class="text-gray-400 mb-6">30% of all protocol revenue is automatically routed to buy back $SCAN tokens from the open market and burn them.</p>
-                            <div class="flex items-center gap-4">
-                                <div class="flex-1 h-12 bg-black rounded flex items-center justify-center border border-white/10">USDC Revenue</div>
-                                <i data-lucide="arrow-right" class="w-6 h-6 text-gray-500"></i>
-                                <div class="flex-1 h-12 bg-black rounded flex items-center justify-center border border-neon-green/50 text-neon-green">$SCAN Burn</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="dashboard-preview" class="py-24 border-t border-white/5 relative overflow-hidden">
+           <section id="revenue" class="py-24 border-t border-white/5 relative">
                 
-                <div class="absolute inset-0 bg-neon-purple/5 opacity-20 pointer-events-none"></div>
-                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-cyan/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-neon-green/5 to-transparent pointer-events-none"></div>
 
-                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 border border-neon-yellow/30 bg-neon-yellow/10 rounded text-neon-yellow font-mono text-xs tracking-widest mb-6">
-                            <i data-lucide="lock" class="w-3 h-3"></i> BETA_ACCESS_ONLY
+                <div class="max-w-5xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold font-display mb-4">VALUE ACCRUAL</h2>
+                    <p class="text-gray-400">Sustainable economic engines powering the protocol.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <div class="p-8 border border-white/10 bg-white/5 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">Enterprise Subscriptions</h3>
+                        <p class="text-gray-400 mb-6">Institutional traders and dApps pay monthly fees (in USDC) to access our low-latency API and Geyser plugins.</p>
+                        <div class="h-2 w-full bg-white/10 rounded-full"><div class="h-full w-[80%] bg-neon-purple rounded-full"></div></div>
+                        <p class="text-right text-xs text-neon-purple mt-2">80% Revenue Retention</p>
+                    </div>
+
+                    <div class="p-8 border border-white/10 bg-white/5 rounded-xl relative overflow-hidden group hover:border-neon-green/50 transition-colors">
+                        
+                        <div class="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="server" class="w-16 h-16 text-neon-green"></i>
                         </div>
-                        <h2 class="text-5xl font-bold font-display mb-6">Command Center <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-white">Upgrade Imminent.</span></h2>
-                        <p class="text-gray-400 text-lg leading-relaxed mb-8 border-l-2 border-white/10 pl-6">
-                            We are compiling the ultimate portfolio visualizer. Track P/L, NFT valuations, and authority changes in a single 3D workspace.
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Sentinel Staking</h3>
+                        <p class="text-gray-400 mb-6">
+                            Stake $SCAN to operate a virtual validation node. Earn real-time yield from Enterprise API calls by verifying ledger integrity.
                         </p>
                         
-                        <div class="space-y-4 font-mono text-sm text-gray-500">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-1 bg-white/10 rounded overflow-hidden">
-                                    <div class="h-full bg-neon-cyan w-[85%] animate-pulse"></div>
-                                </div>
-                                <span>UI_COMPILATION: 85% COMPLETE</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-1 bg-white/10 rounded overflow-hidden">
-                                    <div class="h-full bg-neon-purple w-[60%] animate-pulse"></div>
-                                </div>
-                                <span>DATA_PIPELINES: 60% COMPLETE</span>
+                        <div class="relative h-16 bg-black/60 rounded-lg border border-white/10 flex items-center px-4 overflow-hidden backdrop-blur-md">
+                            <div class="absolute left-0 top-0 h-full w-1 bg-neon-green shadow-[0_0_15px_#00FF94] animate-[scan-right_3s_linear_infinite]"></div>
+                            
+                            <div class="w-full flex justify-between items-center relative z-10">
+                                    <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div class="w-3 h-3 bg-neon-green rounded-full"></div>
+                                        <div class="absolute inset-0 bg-neon-green rounded-full animate-ping opacity-75"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] font-mono text-neon-green tracking-widest">NODE_STATUS</div>
+                                        <div class="text-xs font-bold text-white">OPERATIONAL</div>
+                                    </div>
+                                    </div>
+                                    <div class="text-right">
+                                    <div class="text-[10px] font-mono text-gray-500 tracking-widest">REAL_YIELD</div>
+                                    <div class="text-lg font-bold text-white font-mono">14.2% <span class="text-xs text-gray-500 font-normal">APY</span></div>
+                                    </div>
                             </div>
                         </div>
+                        
+                        <div class="mt-4 flex gap-2">
+                            <span class="px-2 py-1 rounded bg-neon-green/10 text-[10px] font-mono text-neon-green border border-neon-green/20">ETH_FEES</span>
+                            <span class="px-2 py-1 rounded bg-neon-green/10 text-[10px] font-mono text-neon-green border border-neon-green/20">API_REVENUE</span>
+                        </div>
 
-                        <div class="mt-8">
-                            <button class="px-6 py-3 border border-white/20 text-white font-mono text-xs hover:bg-white/5 transition-colors flex items-center gap-2">
-                                <i data-lucide="bell" class="w-4 h-4"></i> NOTIFY_ON_LAUNCH
+                    </div>
+                </div>
+            </div>
+            </section>
+
+           <section id="dashboard-preview" class="py-32 border-t border-white/5 relative overflow-hidden">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-neon-purple/5 rounded-[100%] blur-[120px] pointer-events-none"></div>
+                <div class="absolute bottom-0 right-0 w-[800px] h-[800px] bg-gradient-to-t from-neon-cyan/5 to-transparent rounded-full blur-[100px] pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
+                    
+                    <div class="order-2 lg:order-1">
+                        <div class="inline-flex items-center gap-3 px-4 py-1.5 border border-white/10 bg-white/5 rounded-full backdrop-blur-md mb-8 group cursor-default hover:border-neon-cyan/50 transition-colors">
+                            <div class="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-pulse"></div>
+                            <span class="font-mono text-[10px] tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">PRIVATE_BETA // TIER_1_ACCESS</span>
+                        </div>
+                        
+                        <h2 class="text-6xl font-bold font-display mb-8 leading-tight">
+                            The Glass <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-600">Command Deck.</span>
+                        </h2>
+                        
+                        <p class="text-gray-400 text-lg leading-relaxed mb-10 font-light max-w-md">
+                            A unified forensic workspace. Visualize cross-chain liquidity flows, PnL heatmaps, and authority overrides in a 3D spatial interface. 
+                        </p>
+
+                        <div class="flex items-center gap-6">
+                            <button class="px-8 py-4 bg-white text-black font-bold font-mono text-xs tracking-widest hover:bg-neon-cyan transition-colors flex items-center gap-2 relative overflow-hidden group">
+                                <span class="relative z-10">REQUEST_ACCESS</span>
+                                <div class="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                             </button>
+                            <div class="flex -space-x-4">
+                                <div class="w-10 h-10 rounded-full border-2 border-void bg-gray-800 bg-[url('https://api.dicebear.com/7.x/avataaars/svg?seed=1')] bg-cover"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-void bg-gray-800 bg-[url('https://api.dicebear.com/7.x/avataaars/svg?seed=2')] bg-cover"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-void bg-gray-800 bg-[url('https://api.dicebear.com/7.x/avataaars/svg?seed=3')] bg-cover"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-void bg-black flex items-center justify-center text-[10px] font-mono text-gray-500 hover:text-white transition-colors cursor-pointer">+420</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="relative perspective-container group">
+                    <div class="order-1 lg:order-2 perspective-container relative z-20">
                         
-                        <div class="relative bg-[#050508] border border-white/10 rounded-xl p-6 shadow-2xl transform transition-transform duration-700 group-hover:rotate-x-2 group-hover:rotate-y-2 opacity-60 blur-[2px] group-hover:blur-0 group-hover:opacity-100" style="transform: rotateY(-10deg) rotateX(5deg);">
+                        <div class="relative transform transition-transform duration-700 hover:scale-[1.02]" style="transform: rotateY(-12deg) rotateX(5deg);">
                             
-                            <div class="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded bg-gradient-to-br from-neon-purple to-neon-cyan"></div>
-                                    <div>
-                                        <div class="text-xs text-gray-400 font-mono">WALLET_0x82...9A</div>
-                                        <div class="text-white font-bold">$1,240,592.42</div>
+                            <div class="relative w-full aspect-[16/10] bg-[#0A0A10]/60 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/5">
+                                
+                                <div class="h-12 border-b border-white/5 flex items-center justify-between px-6 bg-white/5">
+                                    <div class="flex gap-2">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                                    </div>
+                                    <div class="text-[9px] font-mono text-gray-500 tracking-widest flex items-center gap-2">
+                                        <i data-lucide="lock" class="w-3 h-3 text-neon-cyan"></i> ENCRYPTED_CONNECTION
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-xs text-gray-400 font-mono">24H P/L</div>
-                                    <div class="text-neon-green font-bold">+12.4%</div>
+
+                                <div class="p-6 grid grid-cols-12 gap-6 h-[calc(100%-3rem)] opacity-40 grayscale-[50%]">
+                                    
+                                    <div class="col-span-3 space-y-4 border-r border-white/5 pr-4">
+                                        <div class="h-8 w-full bg-white/10 rounded animate-pulse"></div>
+                                        <div class="h-4 w-2/3 bg-white/5 rounded"></div>
+                                        <div class="h-4 w-3/4 bg-white/5 rounded"></div>
+                                        <div class="mt-8 space-y-2">
+                                            <div class="h-8 w-full bg-neon-cyan/10 border border-neon-cyan/20 rounded"></div>
+                                            <div class="h-8 w-full bg-white/5 rounded"></div>
+                                            <div class="h-8 w-full bg-white/5 rounded"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-9 flex flex-col gap-6">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="h-24 bg-white/5 rounded border border-white/5 p-4 relative overflow-hidden">
+                                                <div class="absolute bottom-0 left-0 w-full h-1 bg-neon-purple"></div>
+                                                <div class="text-2xl font-bold text-white mb-1">$1.2M</div>
+                                                <div class="text-[10px] text-gray-500 font-mono">NET_WORTH</div>
+                                            </div>
+                                            <div class="h-24 bg-white/5 rounded border border-white/5 p-4 relative overflow-hidden">
+                                                <div class="absolute bottom-0 left-0 w-full h-1 bg-neon-green"></div>
+                                                <div class="text-2xl font-bold text-white mb-1">+420%</div>
+                                                <div class="text-[10px] text-gray-500 font-mono">PNL_YTD</div>
+                                            </div>
+                                            <div class="h-24 bg-white/5 rounded border border-white/5 p-4 relative overflow-hidden">
+                                                <div class="absolute bottom-0 left-0 w-full h-1 bg-neon-cyan"></div>
+                                                <div class="text-2xl font-bold text-white mb-1">A+</div>
+                                                <div class="text-[10px] text-gray-500 font-mono">SAFETY_SCORE</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1 bg-white/5 rounded border border-white/5 relative overflow-hidden flex items-end">
+                                            <svg class="w-full h-full absolute inset-0 text-neon-cyan/20" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                                <path d="M0 100 L0 60 Q 20 40 40 70 T 80 30 L100 20 L100 100 Z" fill="currentColor" />
+                                                <path d="M0 60 Q 20 40 40 70 T 80 30 L100 20" fill="none" stroke="#00F0FF" stroke-width="0.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[6px]">
+                                    
+                                    <div class="absolute inset-0 w-full h-0.5 bg-neon-cyan/50 shadow-[0_0_20px_#00F0FF] animate-[scan-down_3s_linear_infinite] opacity-50"></div>
+
+                                    <div class="relative">
+                                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-white/10 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-dashed border-neon-cyan/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                                        
+                                        <div class="bg-[#050508] border border-white/20 p-8 rounded-2xl shadow-2xl relative z-10 flex flex-col items-center gap-4 hover:border-neon-cyan/50 transition-colors duration-500 group">
+                                            <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center border border-white/10 group-hover:bg-neon-cyan/10 group-hover:border-neon-cyan transition-all duration-500">
+                                                <i data-lucide="fingerprint" class="w-8 h-8 text-gray-400 group-hover:text-neon-cyan transition-colors"></i>
+                                            </div>
+                                            <div class="text-center">
+                                                <h3 class="text-lg font-bold text-white tracking-widest font-display">RESTRICTED</h3>
+                                                <p class="text-[10px] font-mono text-neon-cyan mt-1">BIOMETRIC_AUTH_REQUIRED</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="absolute bottom-8 flex flex-col items-center gap-2">
+                                        <div class="flex items-center gap-1.5">
+                                            <div class="w-1 h-1 bg-neon-red animate-pulse"></div>
+                                            <span class="text-[9px] font-mono text-neon-red tracking-[0.2em]">WAITLIST_ACTIVE</span>
+                                        </div>
+                                        <div class="text-[10px] font-mono text-gray-500">EST. WAIT TIME: 24H</div>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <div class="h-32 w-full bg-white/5 rounded border border-white/5 mb-6 relative overflow-hidden flex items-end px-2 gap-1">
-                                <div class="w-full h-[40%] bg-neon-cyan/20 rounded-t"></div>
-                                <div class="w-full h-[60%] bg-neon-cyan/30 rounded-t"></div>
-                                <div class="w-full h-[45%] bg-neon-cyan/20 rounded-t"></div>
-                                <div class="w-full h-[80%] bg-neon-cyan/50 rounded-t"></div>
-                                <div class="w-full h-[70%] bg-neon-cyan/40 rounded-t"></div>
-                                <div class="w-full h-[90%] bg-neon-cyan/80 rounded-t shadow-[0_0_15px_#00F0FF]"></div>
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="text-[10px] font-mono text-neon-cyan tracking-widest bg-black/50 px-2 rounded">VISUALIZING_DATA...</div>
-                                </div>
-                            </div>
-
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center p-3 bg-white/5 rounded border border-white/5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-6 h-6 rounded-full bg-neon-purple/20 border border-neon-purple/50 flex items-center justify-center text-[8px]">S</div>
-                                        <span class="font-bold text-sm">$SCAN</span>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-sm font-mono">42,000</div>
-                                        <div class="text-neon-green text-[10px]">+5.2%</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center p-3 bg-white/5 rounded border border-white/5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[8px]">M</div>
-                                        <span class="font-bold text-sm text-gray-400">MadLads</span>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-white text-sm font-mono">1 NFT</div>
-                                        <div class="text-gray-500 text-[10px]">FLOOR: 140 SOL</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl transition-all duration-500 group-hover:backdrop-blur-none group-hover:bg-black/20" style="transform: rotateY(-10deg) rotateX(5deg) translateZ(20px);">
-                            
-                            <div class="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#FFD600_10px,#FFD600_20px)] pointer-events-none"></div>
-
-                            <div class="bg-black/80 border border-neon-yellow/50 p-6 rounded-lg text-center shadow-[0_0_30px_rgba(255,214,0,0.2)] transform group-hover:scale-110 transition-transform duration-300">
-                                <div class="w-12 h-12 bg-neon-yellow/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-neon-yellow">
-                                    <i data-lucide="lock" class="text-neon-yellow w-6 h-6"></i>
-                                </div>
-                                <h3 class="text-white font-bold font-display text-xl tracking-widest">RESTRICTED</h3>
-                                <p class="text-neon-yellow font-mono text-xs mt-2">BETA_ACCESS_REQUIRED</p>
-                                <div class="mt-4 h-1 w-full bg-gray-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-neon-yellow w-[70%] animate-[loading_2s_ease-in-out_infinite]"></div>
-                                </div>
-                            </div>
+                            <div class="absolute -bottom-10 left-10 right-10 h-20 bg-neon-cyan/20 blur-[60px] rounded-full pointer-events-none opacity-40"></div>
 
                         </div>
 
@@ -771,44 +885,114 @@
                 </div>
             </section>
 
-            <section id="roadmap" class="py-24 border-t border-white/5">
-                <h2 class="text-4xl font-bold text-center mb-16 tracking-tight font-display">EXECUTION PLAN</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div class="relative p-8 border-l border-neon-green/30 bg-gradient-to-r from-neon-green/5 to-transparent hover:bg-neon-green/10 transition-colors">
-                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-neon-green rounded-full shadow-[0_0_10px_#00FF94]"></div>
-                        <h3 class="text-neon-green font-mono text-xl mb-4">PHASE_01</h3>
-                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
-                            <li>Deploy Audit Terminal</li>
-                            <li>Token Generation Event</li>
-                            <li>Community Seed Round</li>
-                            <li>Beta Access Launch</li>
-                            <li>gRPC Geyser Plugin V1</li>
-                        </ul>
+         <section id="roadmap" class="py-32 border-t border-white/5 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[#020205]">
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-6 relative z-10">
+                
+                <div class="text-center mb-24">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 border border-neon-cyan/30 bg-neon-cyan/5 rounded-full text-neon-cyan font-mono text-[10px] tracking-widest mb-4">
+                        <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></span>
+                        SEQUENCE_ACTIVE
                     </div>
-                    <div class="relative p-8 border-l border-neon-purple/30 bg-gradient-to-r from-neon-purple/5 to-transparent opacity-80 hover:opacity-100 transition-opacity">
-                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-neon-purple rounded-full"></div>
-                        <h3 class="text-neon-purple font-mono text-xl mb-4">PHASE_02</h3>
-                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
-                            <li>Sniper Module Integration</li>
-                            <li>Premium Holders Access</li>
-                            <li>Mobile App Beta</li>
-                            <li>Strategic Partnerships</li>
-                            <li>ZK-Proof Verification</li>
-                        </ul>
-                    </div>
-                     <div class="relative p-8 border-l border-white/30 bg-gradient-to-r from-white/5 to-transparent opacity-60 hover:opacity-100 transition-opacity">
-                        <div class="absolute -left-1.5 top-8 w-3 h-3 bg-white rounded-full"></div>
-                        <h3 class="text-white font-mono text-xl mb-4">PHASE_03</h3>
-                        <ul class="text-gray-400 text-sm space-y-2 text-left list-disc pl-4 font-mono">
-                            <li>Institutional API</li>
-                            <li>Cross-Chain Bridge</li>
-                            <li>DAO Governance</li>
-                            <li>Decentralized Infra</li>
-                            <li>AI Pattern Recognition</li>
-                        </ul>
-                    </div>
+                    <h2 class="text-5xl font-bold font-display mb-4">EXECUTION PROTOCOL</h2>
+                    <p class="text-gray-400 font-mono text-sm tracking-widest">SYSTEM_VERSION_5.0 // ROLLOUT_SCHEDULE</p>
                 </div>
-            </section>
+
+                <div class="relative">
+                    
+                    <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-white/10 -translate-x-1/2">
+                        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-neon-cyan to-transparent animate-[scan-down_4s_linear_infinite] shadow-[0_0_20px_#00F0FF]"></div>
+                    </div>
+
+                    <div class="space-y-24">
+
+                        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center group">
+                            <div class="md:text-right order-2 md:order-1 relative">
+                                <div class="relative bg-[#0A0A12]/80 backdrop-blur-md border border-neon-green/30 p-8 rounded-xl ml-8 md:ml-0 hover:bg-neon-green/5 transition-all duration-500 overflow-hidden group-hover:shadow-[0_0_30px_rgba(0,255,148,0.1)]">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-neon-green/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                    
+                                    <div class="text-xs font-mono text-neon-green mb-2 tracking-widest">PHASE_01 // DEPLOYED</div>
+                                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Genesis Uplink</h3>
+                                    <ul class="text-gray-400 text-sm space-y-2 font-mono md:flex md:flex-col md:items-end">
+                                        <li class="flex items-center gap-2 justify-end"><span class="text-gray-300">Audit Terminal Deployment</span> <i data-lucide="check-circle-2" class="w-3 h-3 text-neon-green"></i></li>
+                                        <li class="flex items-center gap-2 justify-end"><span class="text-gray-300">Token Generation Event</span> <i data-lucide="check-circle-2" class="w-3 h-3 text-neon-green"></i></li>
+                                        <li class="flex items-center gap-2 justify-end"><span class="text-gray-300">Beta Access Launch</span> <i data-lucide="check-circle-2" class="w-3 h-3 text-neon-green"></i></li>
+                                        <li class="flex items-center gap-2 justify-end"><span class="text-gray-300">Sentinel Node v1.0</span> <i data-lucide="check-circle-2" class="w-3 h-3 text-neon-green"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute left-0 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-black border border-neon-green rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_#00FF94]">
+                                <div class="w-3 h-3 bg-neon-green rounded-full animate-pulse"></div>
+                            </div>
+
+                            <div class="hidden md:block order-2">
+                                <div class="text-[200px] font-display font-bold text-white/5 leading-none select-none absolute -top-10 left-10">01</div>
+                            </div>
+                        </div>
+
+                        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center group">
+                            <div class="hidden md:block order-1 text-right relative">
+                                <div class="text-[200px] font-display font-bold text-white/5 leading-none select-none absolute -top-10 right-10">02</div>
+                            </div>
+
+                            <div class="absolute left-0 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-black border border-neon-purple rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_#BD00FF]">
+                                <div class="w-3 h-3 bg-neon-purple rounded-full animate-[ping_1.5s_infinite]"></div>
+                            </div>
+
+                            <div class="order-2 relative">
+                                <div class="relative bg-[#0A0A12]/80 backdrop-blur-md border border-neon-purple/30 p-8 rounded-xl ml-8 md:ml-0 hover:bg-neon-purple/5 transition-all duration-500 overflow-hidden group-hover:shadow-[0_0_30px_rgba(189,0,255,0.1)]">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-neon-purple/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+
+                                    <div class="text-xs font-mono text-neon-purple mb-2 tracking-widest flex items-center gap-2">
+                                        PHASE_02 // COMPILING <span class="w-2 h-2 rounded-full bg-neon-purple animate-pulse"></span>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Neural Expansion</h3>
+                                    <ul class="text-gray-400 text-sm space-y-2 font-mono">
+                                        <li class="flex items-center gap-2"><i data-lucide="loader" class="w-3 h-3 text-neon-purple animate-spin"></i> <span class="text-white">Sniper Module Integration</span></li>
+                                        <li class="flex items-center gap-2"><i data-lucide="circle" class="w-3 h-3 text-gray-600"></i> Mobile App Beta</li>
+                                        <li class="flex items-center gap-2"><i data-lucide="circle" class="w-3 h-3 text-gray-600"></i> Strategic Partnerships</li>
+                                        <li class="flex items-center gap-2"><i data-lucide="circle" class="w-3 h-3 text-gray-600"></i> ZK-Proof Verification</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center group opacity-60 hover:opacity-100 transition-opacity">
+                            <div class="md:text-right order-2 md:order-1 relative">
+                                <div class="relative bg-[#0A0A12]/80 backdrop-blur-md border border-white/10 p-8 rounded-xl ml-8 md:ml-0 hover:border-white/30 transition-all duration-500 overflow-hidden">
+                                    <div class="text-xs font-mono text-gray-500 mb-2 tracking-widest flex items-center justify-end gap-2">
+                                        PHASE_03 // ENCRYPTED <i data-lucide="lock" class="w-3 h-3"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Singularity</h3>
+                                    <ul class="text-gray-500 text-sm space-y-2 font-mono md:flex md:flex-col md:items-end">
+                                        <li class="flex items-center gap-2 justify-end">Institutional API <i data-lucide="lock" class="w-3 h-3"></i></li>
+                                        <li class="flex items-center gap-2 justify-end">Cross-Chain Bridge <i data-lucide="lock" class="w-3 h-3"></i></li>
+                                        <li class="flex items-center gap-2 justify-end">DAO Governance <i data-lucide="lock" class="w-3 h-3"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute left-0 md:left-1/2 -translate-x-1/2 w-8 h-8 bg-black border border-gray-600 rounded-full flex items-center justify-center z-10">
+                                <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                            </div>
+
+                            <div class="hidden md:block order-2">
+                                <div class="text-[200px] font-display font-bold text-white/5 leading-none select-none absolute -top-10 left-10">03</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="absolute left-0 md:left-1/2 bottom-0 w-px h-24 bg-gradient-to-b from-white/10 to-transparent -translate-x-1/2"></div>
+                    
+                </div>
+            </div>
+        </section>
 
              <section class="py-24 border-t border-white/5">
                 <div class="max-w-6xl mx-auto px-6">
@@ -966,101 +1150,121 @@
                 </div>
             </section>
 
-            <section id="contact" class="py-24 border-t border-white/5 bg-gradient-to-b from-[#020205] to-[#050508]">
-                <div class="max-w-6xl mx-auto px-6">
+            <section id="contact" class="py-32 border-t border-white/5 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[#020205]">
+                    <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-neon-purple/10 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] opacity-20"></div>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-6 relative z-10">
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-24 items-center">
                         
-                        <div class="space-y-8">
+                        <div class="lg:col-span-2 space-y-12">
                             <div>
-                                <h2 class="text-4xl font-bold font-display mb-4">ESTABLISH<br/><span class="text-neon-cyan">SECURE UPLINK</span></h2>
-                                <p class="text-gray-400 text-lg">Report anomalies, request features, or initialize partnership protocols. All transmissions are encrypted.</p>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 border border-neon-cyan/30 bg-neon-cyan/10 rounded-full text-neon-cyan font-mono text-[10px] tracking-widest mb-6">
+                                    <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
+                                    </span>
+                                    CHANNEL_OPEN
+                                </div>
+                                <h2 class="text-5xl font-bold font-display mb-6 leading-tight">
+                                    Initiate <br/>
+                                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Secure Uplink.</span>
+                                </h2>
+                                <p class="text-gray-400 text-lg font-light leading-relaxed">
+                                    Direct line to the core engineering team. All transmissions are encrypted and prioritized based on urgency protocols.
+                                </p>
                             </div>
 
-                            <div class="space-y-6">
-                                <div class="flex items-start gap-4">
-                                    <div class="p-3 bg-white/5 border border-white/10 rounded">
-                                        <i data-lucide="bug" class="text-neon-red w-6 h-6"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-white mb-1">Bug Bounty Program</h3>
-                                        <p class="text-sm text-gray-500">Found a vulnerability? We pay up to $50k USDC for critical exploits.</p>
-                                    </div>
+                            <div class="p-6 border border-white/10 bg-white/5 rounded-xl backdrop-blur-sm">
+                                <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+                                    <span class="text-xs font-mono text-gray-500">NETWORK_LATENCY</span>
+                                    <span class="text-xs font-mono text-neon-green">14ms</span>
                                 </div>
-                                <div class="flex items-start gap-4">
-                                    <div class="p-3 bg-white/5 border border-white/10 rounded">
-                                        <i data-lucide="message-square" class="text-neon-purple w-6 h-6"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-white mb-1">Community Feedback</h3>
-                                        <p class="text-sm text-gray-500">Join our Discord for real-time discussion with the core dev team.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-6 border border-dashed border-white/10 rounded-xl bg-white/5 font-mono text-xs text-gray-400">
-                                <div>// CURRENT_SUPPORT_STATUS</div>
-                                <div class="flex items-center gap-2 mt-2">
-                                    <span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
-                                    <span class="text-white">OPERATIONAL (AVG RESPONSE: 2H)</span>
+                                <div class="flex gap-1 h-8 items-end">
+                                    <div class="w-1 bg-neon-green/20 h-[40%] animate-[pulse_1s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/40 h-[70%] animate-[pulse_1.2s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/60 h-[50%] animate-[pulse_0.8s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/80 h-[90%] animate-[pulse_1.5s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green h-[60%] animate-[pulse_1.1s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/80 h-[80%] animate-[pulse_1.3s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/60 h-[45%] animate-[pulse_0.9s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/40 h-[30%] animate-[pulse_1.4s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/20 h-[50%] animate-[pulse_1.6s_infinite]"></div>
+                                    <div class="w-1 bg-neon-green/10 h-[20%] animate-[pulse_2s_infinite]"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="relative">
-                            <div class="absolute -inset-1 bg-gradient-to-br from-neon-cyan via-neon-purple to-neon-red rounded-xl opacity-20 blur"></div>
-                            
-                            <form class="relative bg-[#0A0A12] border border-white/10 p-8 rounded-xl space-y-6">
+                        <div class="lg:col-span-3">
+                            <div class="relative group">
                                 
-                                <div class="grid grid-cols-2 gap-6">
-                                    <div class="space-y-2">
-                                        <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Signal Type</label>
-                                        <div class="relative">
-                                            <select class="w-full bg-white/5 border border-white/10 text-white text-sm px-4 py-3 rounded focus:outline-none focus:border-neon-cyan focus:bg-white/10 transition-colors appearance-none font-mono">
-                                                <option>GENERAL_INQUIRY</option>
-                                                <option>BUG_REPORT</option>
-                                                <option>FEATURE_REQUEST</option>
-                                                <option>ENTERPRISE_ACCESS</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+                                <div class="absolute -inset-1 bg-gradient-to-b from-neon-purple/20 to-neon-cyan/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+                                
+                                <div class="relative bg-[#050508]/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl">
+                                    
+                                    <div class="flex items-center justify-between mb-10">
+                                        <div class="flex gap-6 border-b border-white/10">
+                                            <button class="pb-2 text-xs font-mono text-neon-cyan border-b border-neon-cyan tracking-widest">TRANSMISSION</button>
+                                            <button class="pb-2 text-xs font-mono text-gray-600 hover:text-white transition-colors tracking-widest">LOGS</button>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                                            <div class="w-2 h-2 rounded-full bg-white/20"></div>
                                         </div>
                                     </div>
-                                    <div class="space-y-2">
-                                        <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Priority Level</label>
-                                        <div class="relative">
-                                            <select class="w-full bg-white/5 border border-white/10 text-white text-sm px-4 py-3 rounded focus:outline-none focus:border-neon-purple focus:bg-white/10 transition-colors appearance-none font-mono">
-                                                <option>LOW</option>
-                                                <option>MEDIUM</option>
-                                                <option>HIGH</option>
-                                                <option>CRITICAL</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+
+                                    <form class="space-y-10">
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                            <div class="group/input relative">
+                                                <input type="text" required class="peer w-full bg-transparent border-b border-white/20 py-2 text-white font-mono text-sm focus:outline-none focus:border-neon-cyan transition-colors placeholder-transparent" placeholder="Email">
+                                                <label class="absolute left-0 -top-3 text-xs font-mono text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-neon-cyan">IDENTITY_HASH (EMAIL)</label>
+                                                <div class="absolute bottom-0 left-0 w-0 h-px bg-neon-cyan transition-all duration-500 peer-focus:w-full"></div>
+                                            </div>
+                                            
+                                            <div class="group/input relative">
+                                                <select class="peer w-full bg-transparent border-b border-white/20 py-2 text-white font-mono text-sm focus:outline-none focus:border-neon-cyan transition-colors appearance-none">
+                                                    <option class="bg-[#050508]">GENERAL_INQUIRY</option>
+                                                    <option class="bg-[#050508]">BUG_BOUNTY</option>
+                                                    <option class="bg-[#050508]">PARTNERSHIP</option>
+                                                    <option class="bg-[#050508]">ENTERPRISE_ACCESS</option>
+                                                </select>
+                                                <label class="absolute left-0 -top-3 text-xs font-mono text-gray-400">SUBJECT_MATTER</label>
+                                                <i data-lucide="chevron-down" class="absolute right-0 top-2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <div class="relative group/area">
+                                            <textarea rows="4" required class="peer w-full bg-white/5 border border-white/10 rounded-lg p-4 text-white font-mono text-sm focus:outline-none focus:border-neon-cyan/50 focus:bg-white/10 transition-colors resize-none placeholder-gray-600" placeholder="Enter transmission data..."></textarea>
+                                            
+                                            <div class="absolute top-0 right-0 p-2 opacity-50 group-hover/area:opacity-100 transition-opacity">
+                                                <div class="w-2 h-2 border-t border-r border-neon-cyan"></div>
+                                            </div>
+                                            <div class="absolute bottom-0 left-0 p-2 opacity-50 group-hover/area:opacity-100 transition-opacity">
+                                                <div class="w-2 h-2 border-b border-l border-neon-cyan"></div>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="w-full group relative overflow-hidden rounded bg-white text-black font-bold font-mono text-xs tracking-[0.2em] py-5 hover:bg-neon-cyan transition-colors duration-300">
+                                            <span class="relative z-10 flex items-center justify-center gap-3">
+                                                <i data-lucide="send" class="w-4 h-4"></i> UPLOAD_TO_MAINNET
+                                            </span>
+                                            <div class="absolute inset-0 bg-neon-cyan/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 z-0"></div>
+                                        </button>
+
+                                        <div class="flex justify-between items-center text-[9px] font-mono text-gray-600 border-t border-white/5 pt-4">
+                                            <span>ENCRYPTION: PGP_KEY_ID_8829A</span>
+                                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div> SECURE</span>
+                                        </div>
+
+                                    </form>
+
                                 </div>
-
-                                <div class="space-y-2">
-                                    <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Identity (Email)</label>
-                                    <input type="email" placeholder="user@domain.com" class="w-full bg-white/5 border border-white/10 text-white text-sm px-4 py-3 rounded focus:outline-none focus:border-neon-cyan focus:bg-white/10 transition-colors font-mono placeholder-gray-700">
-                                </div>
-
-                                <div class="space-y-2">
-                                    <label class="text-xs font-mono text-gray-500 uppercase tracking-widest">Transmission Data (Message)</label>
-                                    <textarea rows="4" placeholder="Enter your detailed report here..." class="w-full bg-white/5 border border-white/10 text-white text-sm px-4 py-3 rounded focus:outline-none focus:border-neon-cyan focus:bg-white/10 transition-colors font-mono placeholder-gray-700 resize-none"></textarea>
-                                </div>
-
-                                <div class="flex items-center gap-4 pt-4">
-                                    <button type="button" class="flex-1 bg-white text-black font-bold font-mono text-sm py-4 rounded tracking-widest hover:bg-neon-cyan transition-colors relative overflow-hidden group">
-                                        <span class="relative z-10">TRANSMIT_DATA</span>
-                                        <div class="absolute inset-0 bg-neon-cyan/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                                    </button>
-                                </div>
-
-                                <p class="text-center text-[10px] text-gray-600 font-mono">
-                                    * ALL DATA IS ENCRYPTED VIA PGP BEFORE TRANSMISSION.
-                                </p>
-
-                            </form>
+                            </div>
                         </div>
 
                     </div>

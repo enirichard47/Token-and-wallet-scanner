@@ -225,6 +225,19 @@ a, button, input, .cursor-pointer, select, label {
     50% { transform: scale(0, 0); opacity: 0; }
     100% { transform: scale(0, 0); opacity: 0; }
 }
+
+@keyframes scan-right {
+    0% { left: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+}
+
+@keyframes data-stream {
+    0% { background-position: 0% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
 .powering-down { 
     animation: power-off 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; 
     pointer-events: none; 
